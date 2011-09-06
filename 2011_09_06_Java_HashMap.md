@@ -26,7 +26,7 @@ When you use this "syntax", you'll actually create a new anonymous inner
 class. Each anonymous inner class instace will have a runtime reference
 to the `this` object for the context where you define the anonymous
 inner class in. Thus, if your this happens to have references to 100
-megabytes of porn, that stuff will not be GDd as long as this
+megabytes of porn, that stuff will not be GC'd as long as this
 Map or yours is alive. Also, should you try to serialize your map for
 sending or storing it somewhere, you'll also be sending your 100
 megabytes of porn.
