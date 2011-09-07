@@ -18,13 +18,25 @@ A simple workaround (Thanks [Jussi](http://twitter.com/#!/jvesala)) seems to wor
 
 ~~~ {.javascript}
    // ...
-   numbers.Concat(Rx.Observable.Never).Zip(timer, former).Subscribe(logger)
+   numbers.Concat(Rx.Observable.Never()).Zip(timer, former).Subscribe(logger)
 
-TypeError
 1
 2
 3
 
 ~~~
 
-So, now it prints the stuff to the console, but also produces some TypeError. What is that?
+So, now it prints the stuff to the console as you'd expect.
+
+To make zipping with arrays a bit easier, you could add a `ZipWithArray`
+method to the `Observable` prototype like this.
+
+~~~ {.javascript}
+  Rx.Observable.prototype.ZipWithArray = function(array, selector) {·
+      return this.Zip(Rx.Observable.FromArray(array).Concat(Rx.Observable.Never()), 
+  }
+~~~
+
+I've put this extension, as well a bunch of others on Github, in my
+[rxjs-extensions](http://github.com/raimohanska/rxjs-extensions/blob/master/zip-with-array.js)
+project.
