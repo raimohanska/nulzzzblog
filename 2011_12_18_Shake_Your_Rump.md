@@ -1,8 +1,12 @@
 Shake Your Rump
 ---------------
 
-We've been working on a mobile (Android/iOS) app called Karma for some
-time. The app will answer the ever-crucial question "who's turn is it to
+This time it's not about Rx for Javascript or even Javascript. Well, 
+that's at least partly because I got hooked on Haskell and have spent
+most of my free time (programming related, that is) on Haskell projects.
+
+But lately, I've been working on a mobile (Android/iOS) app called Karma.
+The app will answer the ever-crucial question "who's turn is it to
 buy the next round?". To make it fun and easy to use, it needed an easy
 way of telling the system that two guys, say Bob and Mike, have just met 
 for some beers. Thanks to location and acceleration info, it's possible
