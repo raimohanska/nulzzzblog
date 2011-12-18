@@ -3,7 +3,7 @@ Shake Your Rump
 
 This time it's not about Rx for Javascript or even Javascript. Well, 
 that's at least partly because I got hooked on Haskell and have spent
-most of my free time (programming related, that is) on Haskell projects.
+most of my free time (not much though) on Haskell projects.
 
 But lately, I've been working on a mobile (Android/iOS) app called Karma.
 The app will answer the ever-crucial question "who's turn is it to
