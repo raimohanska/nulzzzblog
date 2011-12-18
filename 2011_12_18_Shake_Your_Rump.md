@@ -25,15 +25,16 @@ As you see, it's open-source. And, it's actually very simple:
 1. When user shakes the phone, the RUMP Client sends a message to the
    server. Like this:
 
-      { "userId" : "john", "displayName" : "John Kennedy", "location": {
-"latitude": 51.0, "longitude": -0.1}}
+   ~~~ .json
+      { "userId" : "john", "displayName" : "John Kennedy", "location": { "latitude": 51.0, "longitude": -0.1 } }
+   ~~~
 
 2. Server matches incoming requests by time (3 second time window to
    match) and location (1 kilometer max distance).
 
 3. After 3 seconds from the first received request, the server sends
    match info to all clients that were matched with the first one. The
-   response is just an array of all the incoming requests.
+   response is just an array of all the matching requests.
 
 4. Rump Client delivers the match info to the client application.
 
