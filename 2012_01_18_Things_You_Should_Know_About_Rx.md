@@ -1,4 +1,4 @@
-Things You Should Know About Rx
+Things You Should Know About RX
 ===============================
 
 As I've said before, RX for Javascript is a great library for event-rich Javascript apps. 
@@ -11,8 +11,8 @@ Some examples
 A counter that increases or decreases its value based on clicks to `+` and `-` buttons can be implemented
 like this:
 
-~~~ .javascript
-var incr = $('#incr').toObservable('click').Select(always(1))
+~~~ .javascript  
+  var incr = $('#incr').toObservable('click').Select(always(1))
   var decr = $('#decr').toObservable('click').Select(always(-1))
   var series = incr.Merge(decr)
     .Scan(0, function(total, x) { return total + x })
@@ -72,14 +72,44 @@ Observables from Arrays
 `Observable.FromArray` serves you a cold Observable. It always spits out the same list of objects when
 you subscribe. Doesn't provide a consistent mapping of time to events. Period.
 
-Ajax as Observable
-------------------
-
 Mixing Hot and Cold
 -------------------
 
 If you mix hot with cold, what do you get? Medium? In RX, you'll get a cold dish. So, if you
 
 ~~~
-var observable = 
-observable.StartWith(
+var hotness = $(document).toObservable("keyup")
+var temperature = Observable.FromArray("coldness").Concat(hotness.Select(always("hotness")))
+~~~
+
+You might expect to get an observable starting with "coldness" and producing "hotness" at each keyup.
+However, `StartWith` made your new observable a bit colder in the sense that any new subscriber will
+always get "coldness" first.
+
+No matter how you combine coldness with hotness, you won't get a hot Observable back.
+
+StartWith
+---------
+
+Using `StartWith` won't save you. It's the same thing as concatenating with a cold stream of one event.
+
+Workaround : Publish/Connect
+-------------------------------
+
+This is a workaround I already presented in my hot-tempered [Failing with RX-JS](http://nullzzz.blogspot.com/2011/02/failing-with-rx-js.html)
+posting. You can make your Observable hot again by using `Publish` and `Connect`. For instance, you can 
+fix the broken counter like this:
+
+~~~ .javascript
+  var series = incr.Merge(decr)
+    .Scan(0, function(total, x) { return total + x })
+    .Publish()
+  var dispose = series.Connect()
+~~~
+
+So first you call `Publish` on your Observable. That'll give you an Observable, that will have a single connection to the
+underlying Observable, no matter how many subscribers you add. Then you call `Connect`, which will start it, by calling
+the `Subscribe` method of the underlying stream. It will also give you a back a "dispose" function for disconnecting.
+
+The obvious drawback of this method is that there's more clutter. Also, the connection to the underlying stream won't be
+automatically disconnected. You have to call `dispose` yourself.
