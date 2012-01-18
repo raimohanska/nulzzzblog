@@ -55,16 +55,13 @@ In RX, there are "hot" and "cold" observables. As Bnaya Eshet described in his [
 >otherwise it should be marked as cold.
 
 So what? Well, simply put, hot observables are consistent among subscribers and cold ones are not. A 
-hot observable can be seen as a list of `(time, value)` pairs. The cold ones are, well, something that 
-depends on when you subscribe.
+hot observable can be seen as a list of `(time, value)` pairs. A hot observable won't
+produce the an event to subscribers that subscribed after the event occurred. The cold ones are, well, 
+something that depends on when you subscribe.
 
-All Observables that are directly derived from some real-world events are typically hot. For instance, 
-mouse and keyboard events will be consistent among all subscribers.
-
-So, as long as you keep your Observables hot, they will produce consistent results. A hot observable won't
-produce the an event to subscribers that subscribed after the event occurred.
-
-When does it get cold, then?
+All Observables that are directly derived from some real-world events are hot. For instance, 
+mouse and keyboard events will be consistent among all subscribers. But, if you combine them with a cold
+observable, or apply a stateful combinator, such as `Scan`, you're not so safe anymore.
 
 Observables from Arrays
 -----------------------
@@ -75,7 +72,7 @@ you subscribe. Doesn't provide a consistent mapping of time to events. Period.
 Mixing Hot and Cold
 -------------------
 
-If you mix hot with cold, what do you get? Medium? In RX, you'll get a cold dish. So, if you
+If you mix hot with cold, what do you get? Medium? So, if you
 
 ~~~
 var hotness = $(document).toObservable("keyup")
@@ -86,7 +83,13 @@ You might expect to get an observable starting with "coldness" and producing "ho
 However, `StartWith` made your new observable a bit colder in the sense that any new subscriber will
 always get "coldness" first.
 
-No matter how you combine coldness with hotness, you won't get a hot Observable back.
+No matter how you combine coldness with hotness, you won't get a hot Observable back. It won't be cold
+as in "tree falling in the woods", but inconsistent anyway. Lukewarm? No, more like Groundhog Day.
+
+Stateful Streams Using Scan
+---------------------------
+
+As I showed in the counter-example (pun intended) above, Scan will give you a Groundhog Day Observable.
 
 StartWith
 ---------
