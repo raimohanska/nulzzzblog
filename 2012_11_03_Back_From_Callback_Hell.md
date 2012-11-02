@@ -14,14 +14,14 @@ values of both? You might
       })
     })
 
-That's a minor callback hell allready. How about
+That's a minor callback hell already. How about
 
-    var cats = Bacon.fromPromise($.ajax("/cats")
-    var dogs = Bacon.fromPromise($.ajax("/dogs")
+    var cats = Bacon.fromPromise($.ajax("/cats"))
+    var dogs = Bacon.fromPromise($.ajax("/dogs"))
     Bacon.combineAsArray(cats, dogs).onValues(doStuffWithCatsAndDogs)
 
 Know what? Your AJAX just got parallel, too. Maybe we should refactor
-this too:
+this to:
 
     function ajax(url) { return Bacon.fromPromise($.ajax(url)) }
     Bacon.combineAsArray(ajax("/cats"), ajax("/dogs")).onValues(doStuffWithCatsAndDogs)
@@ -63,7 +63,7 @@ With Bacon, you could do
 
     Bacon.combineTemplate({
       cats: ajax("/cats"),
-      dogs: ajax("/dogs",
+      dogs: ajax("/dogs"),
       stuff: name.map(urlForStuff).ajax()
     }).onValue(doStuff)
 
