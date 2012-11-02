@@ -26,7 +26,18 @@ Nice? Well, you could do it also like
       .map(function(dogs) { return "/stuff" + dogs }).ajax()
       .onValue(doStuff)
 
-Any better? At least we got rid of the arrowhead. Now, what about if you
+Any better? At least we got rid of the arrowhead. You could easily
+refactor that into
+
+    function url(thing, id) { return "/" + thing + "/" + id }
+      
+    Bacon.UI.textFieldValue($("input.name"))
+      .map(url, "cats").ajax()
+      .map(url, "dogs").ajax()
+      .map(url, "stuff").ajax()
+      .onValue(doStuff)
+
+Now, what about if you
 want to perform two independent AJAX calls and do something with the
 values of both?
 
@@ -42,4 +53,11 @@ A minor hell there. How about
     var dogs = Bacon.fromPromise($.ajax("/dogs")
     Bacon.combineAsArray(cats, dogs).onValues(doStuffWithCatsAndDogs)
 
-Know what? Your AJAX just got parallel, too.
+Know what? Your AJAX just got parallel, too. Maybe we should refactor
+this too:
+
+    function ajax(url) { return Bacon.fromPromise($.ajax(url)) }
+    Bacon.combineAsArray(ajax("/cats"),
+ajax("/dogs")).onValues(doStuffWithCatsAndDogs)
+
+That's it.
