@@ -57,7 +57,6 @@ Know what? Your AJAX just got parallel, too. Maybe we should refactor
 this too:
 
     function ajax(url) { return Bacon.fromPromise($.ajax(url)) }
-    Bacon.combineAsArray(ajax("/cats"),
-ajax("/dogs")).onValues(doStuffWithCatsAndDogs)
+    Bacon.combineAsArray(ajax("/cats"), ajax("/dogs")).onValues(doStuffWithCatsAndDogs)
 
 That's it.
