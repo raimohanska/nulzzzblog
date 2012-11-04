@@ -91,3 +91,8 @@ Beautiful? Nope, could be even uglier though. Works? Seems to. Number of variabl
 Writing this kind of code is like changing diapers. Except kids grow up and change your diapers in the end.
 This kind of code just grows uglier and more disgusting and harder to maintain. It's like if your kids gradually started to...
 Well, let's not go there.
+
+There's still a major bug in the code: the username availability responses may return in a different order than they were requested,
+in which case the code may end up showing an incorrect result. Easy to fix? Well, kinda.. Just add a counter and .. Oh, it's sending 
+tons of request even if you just move the cursor with the arrow keys in the username field. Hmm.. One more variable and.. Still too
+many requests... Throttling needed... It's starting to get a bit complicated now... ESCAPE!!!
