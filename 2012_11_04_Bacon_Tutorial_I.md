@@ -37,4 +37,4 @@ I'd even say that this is quite standard stuff nowadays. You might now model the
 ![dependencies](https://raw.github.com/raimohanska/bacon-devday-slides/master/images/registration-form-thorough.png)
 
 Now you see that, for instance, enabling/disabling the Register button depends on quite a many different things, some
-of them asynchronous.
+of them asynchronous. But hey, fuck the shit. Let's just hack it together now, right? Some jQuery and we're done in a while.
