@@ -118,3 +118,27 @@ Well, let's not go there.
 
 How to improve this code? With MVC frameworks. Nope. Object-oriented design? Maybe. You'll end up with more code
 and better structure, but iIt will still be hard to separate concerns cleanly...
+
+No matter what, you'll need to store the UI state, like whether or not an AJAX request is pending, somewhere. 
+And you need to trigger things like enabling/disabling the button somewhere, and usually in many places, as in the code
+above. This introduces dependencies in all the wrong places. Now many different parts of code need to know about updating
+the status of the button, while it should be the other way around.
+
+With the well-known Observer pattern (say, jQuery custom events) you can do some decoupling, so that you'll have an Observer
+that observes many events and then updates the button state. But, this does not solve the problem of providing the 
+updateButtonState function with all the relevant data. So you'll end up using one mechanism for triggering state update and
+another one for maintaining required mutable state. No good.
+
+Wouldn't it be great if you had some abstraction for a signal/property that you can observe and also compose, so that
+the "button enabled" state would be a composite signal/property constructed from all the required input signals?
+
+Say yes.
+
+Good. Use Bacon.js. The Property class is just that: a composable signal representing the state of something. The EventStream 
+class is a composable signal representing distinct events. Define the following signals:
+
+    var username = ..
+    var fullname = ..
+    var buttonClick = ..
+
+The rest is just composition. But hey, I'll get to that in the next posting.
