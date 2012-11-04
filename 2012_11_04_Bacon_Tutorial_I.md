@@ -5,7 +5,19 @@ registration form for an imaginary web site. Something like this.
 
 ![ui-sketch](https://raw.github.com/raimohanska/bacon-devday-slides/master/images/registration-form-ui.png)
 
-This seems ridiculously simple, right? At first it might seem so, 
+This seems ridiculously simple, right? As in
+
+          registerButton.click(function(event) {
+            event.preventDefault()
+            var data = { username: usernameField.val(), fullname: fullnameField.val()}
+            $.ajax({
+              type: "post",
+              url: "/register",
+              data: JSON.stringify(data)
+            })
+          })
+
+At first it might seem so, 
 but if you're planning on implementing a top-notch form, you'll want 
 to consider including
 
@@ -26,4 +38,3 @@ I'd even say that this is quite standard stuff nowadays. You might now model the
 
 Now you see that, for instance, enabling/disabling the Register button depends on quite a many different things, some
 of them asynchronous.
-
