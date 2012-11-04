@@ -38,3 +38,56 @@ I'd even say that this is quite standard stuff nowadays. You might now model the
 
 Now you see that, for instance, enabling/disabling the Register button depends on quite a many different things, some
 of them asynchronous. But hey, fuck the shit. Let's just hack it together now, right? Some jQuery and we're done in a while.
+
+Ok, here:
+
+          var usernameAvailable, checkingAvailability, clicked
+          
+          usernameField.keyup(function(event) {
+            showUsernameAjaxIndicator(true)
+            updateButtonState()
+            $.ajax({ url : "/usernameavailable/" + usernameField.val()}).done(function(available) {
+              usernameAvailable = available
+              setVisibility(unavailabilityLabel, !available)
+              showUsernameAjaxIndicator(false)
+              updateButtonState()
+            })
+          })
+
+          fullnameField.keyup(updateButtonState)
+
+          registerButton.click(function(event) {
+            event.preventDefault()
+            clicked = true
+            setVisibility(registerAjaxIndicator, true)
+            updateButtonState()
+            var data = { username: usernameField.val(), fullname: fullnameField.val()}
+            $.ajax({
+              type: "post",
+              url: "/register",
+              data: JSON.stringify(data)
+            }).done(function() {
+              setVisibility(registerAjaxIndicator, false)
+              resultSpan.text("Thanks!")
+            })
+          })
+
+          updateButtonState()
+
+          function showUsernameAjaxIndicator(show) {
+            checkingAvailability = show
+            setVisibility(usernameAjaxIndicator, show)
+          }
+
+          function updateButtonState() {
+            setEnabled(registerButton, usernameAvailable 
+                                        && nonEmpty(usernameField.val()) 
+                                        && nonEmpty(fullnameField.val())
+                                        && !checkingAvailability
+                                        && !clicked)
+
+Beautiful? Nope, could be even uglier though. Works? Seems to. Number of variables? 3.
+
+Writing this kind of code is like changing diapers. Except kids grow up and change your diapers in the end.
+This kind of code just grows uglier and more disgusting and harder to maintain. It's like if your kids gradually started to...
+Well, let's not go there.
