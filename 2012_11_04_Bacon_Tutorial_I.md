@@ -1,7 +1,15 @@
 This is the first part of a hopefully upcoming series of postings
 intended as a [Bacon.js](https://github.com/raimohanska/bacon.js)
 tutorial. I'll be building a fully functional, however simplified, AJAX
-registration form for an imaginary web site. Something like this.
+registration form for an imaginary web site. 
+
+This material is based on my presentation/hands-on session at [Reaktor Dev Day 2012](http://reaktordevday.fi/2012/)
+where I had to squeeze a Bacon.js intro and a coding session into less than an hour. I didn't have much time
+to discuss the problem and jumped into the solution a bit too fast. This time I'll first try to explain the problem
+I'm trying to solve with Bacon. So bear with me. Or have a look at the [Full Solution](https://github.com/raimohanska/bacon-devday-code/blob/full-solution/index.html)
+first if you like.
+
+Anyway, the registration form could look something like this:
 
 ![ui-sketch](https://raw.github.com/raimohanska/nulzzzblog/master/images/registration-form-ui.png)
 
