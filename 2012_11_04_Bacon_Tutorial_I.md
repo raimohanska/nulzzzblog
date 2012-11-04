@@ -13,7 +13,7 @@ Anyway, the registration form could look something like this:
 
 ![ui-sketch](https://raw.github.com/raimohanska/nulzzzblog/master/images/registration-form-ui.png)
 
-This seems ridiculously simple, right? As in
+This seems ridiculously simple, right? Enter username, fullname, click and you're done. As in
 
           registerButton.click(function(event) {
             event.preventDefault()
@@ -137,16 +137,18 @@ that observes many events and then updates the button state. But, this does not 
 updateButtonState function with all the relevant data. So you'll end up using one mechanism for triggering state update and
 another one for maintaining required mutable state. No good.
 
-Wouldn't it be great if you had some abstraction for a signal/property that you can observe and also compose, so that
-the "button enabled" state would be a composite signal/property constructed from all the required input signals?
+Wouldn't it be great if you had some abstraction for a signal that you can observe and compose, so that
+the "button enabled" state would be a composite signal constructed from all the required input signals?
 
 Say yes.
 
-Good. Use Bacon.js. The Property class is just that: a composable signal representing the state of something. The EventStream 
+Good. The Property class in Bacon.js is just that: a composable signal representing the state of something. The EventStream 
 class is a composable signal representing distinct events. Define the following signals:
 
     var username = ..
     var fullname = ..
     var buttonClick = ..
 
-The rest is just composition. But hey, I'll get to that in the next posting.
+The rest is just composition.
+
+But hey, I'll get to that in the next posting.
