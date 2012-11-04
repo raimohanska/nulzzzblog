@@ -41,10 +41,6 @@ of them asynchronous. But hey, fuck the shit. Let's just hack it together now, r
 
 [hack hack hack] ... k, done. Beautiful? Nope, could be even uglier though. Works? Seems to. Number of variables? 3.
 
-Writing this kind of code is like changing diapers. Except kids grow up and change your diapers in the end.
-This kind of code just grows uglier and more disgusting and harder to maintain. It's like if your kids gradually started to...
-Well, let's not go there.
-
 There's still a major bug in the code: the username availability responses may return in a different order than they were requested,
 in which case the code may end up showing an incorrect result. Easy to fix? Well, kinda.. Just add a counter and .. Oh, it's sending 
 tons of request even if you just move the cursor with the arrow keys in the username field. Hmm.. One more variable and.. Still too
@@ -111,4 +107,14 @@ Here's the code now:
                                         && !clicked)
           }
 
+Number of variables: 6
+Max. level of nesting: 5
+
 Are your eyes burning already?
+
+Writing this kind of code is like changing diapers. Except kids grow up and change your diapers in the end.
+This kind of code just grows uglier and more disgusting and harder to maintain. It's like if your kids gradually started to...
+Well, let's not go there.
+
+How to improve this code? With MVC frameworks. Nope. Object-oriented design? Maybe. You'll end up with more code
+and better structure, but iIt will still be hard to separate concerns cleanly...
