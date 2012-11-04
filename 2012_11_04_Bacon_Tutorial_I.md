@@ -50,11 +50,59 @@ I'd even say that this is quite standard stuff nowadays. You might now model the
 Now you see that, for instance, enabling/disabling the Register button depends on quite a many different things, some
 of them asynchronous. But hey, fuck the shit. Let's just hack it together now, right? Some jQuery and we're done in a while.
 
-[hack hack hack] ... k, done. Beautiful? Nope, could be even uglier though. Works? Seems to. Number of variables? 3.
+[hack hack hack] ... k, done. 
 
-There's still a major bug in the code: the username availability responses may return in a different order than they were requested,
+          var usernameAvailable, checkingAvailability, clicked
+          
+          usernameField.keyup(function(event) {
+            showUsernameAjaxIndicator(true)
+            updateButtonState()
+            $.ajax({ url : "/usernameavailable/" + usernameField.val()}).done(function(available) {
+              usernameAvailable = available
+              setVisibility(unavailabilityLabel, !available)
+              showUsernameAjaxIndicator(false)
+              updateButtonState()
+            })
+          })
+
+          fullnameField.keyup(updateButtonState)
+
+          registerButton.click(function(event) {
+            event.preventDefault()
+            clicked = true
+            setVisibility(registerAjaxIndicator, true)
+            updateButtonState()
+            var data = { username: usernameField.val(), fullname: fullnameField.val()}
+            $.ajax({
+              type: "post",
+              url: "/register",
+              data: JSON.stringify(data)
+            }).done(function() {
+              setVisibility(registerAjaxIndicator, false)
+              resultSpan.text("Thanks!")
+            })
+          })
+
+          updateButtonState()
+
+          function showUsernameAjaxIndicator(show) {
+            checkingAvailability = show
+            setVisibility(usernameAjaxIndicator, show)
+          }
+
+          function updateButtonState() {
+            setEnabled(registerButton, usernameAvailable 
+                                        && nonEmpty(usernameField.val()) 
+                                        && nonEmpty(fullnameField.val())
+                                        && !checkingAvailability
+                                        && !clicked)
+          }
+
+Beautiful? Nope, could be even uglier though. Works? Seems to. Number of variables? 3.
+
+Unfortunately, there's still a major bug in the code: the username availability responses may return in a different order than they were requested,
 in which case the code may end up showing an incorrect result. Easy to fix? Well, kinda.. Just add a counter and .. Oh, it's sending 
-tons of request even if you just move the cursor with the arrow keys in the username field. Hmm.. One more variable and.. Still too
+tons of requests even if you just move the cursor with the arrow keys in the username field. Hmm.. One more variable and.. Still too
 many requests... Throttling needed... It's starting to get a bit complicated now... Oh, setTimeout, clearTimeout... DONE.
 
 Here's the code now:
