@@ -1,3 +1,5 @@
+Bacon.js Tutorial Part I : Hacking With jQuery
+
 This is the first part of a hopefully upcoming series of postings
 intended as a [Bacon.js](https://github.com/raimohanska/bacon.js)
 tutorial. I'll be building a fully functional, however simplified, AJAX
