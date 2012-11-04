@@ -52,24 +52,29 @@ many requests... Throttling needed... It's starting to get a bit complicated now
 
 Here's the code so far, without throttling:
 
-          var usernameAvailable, checkingAvailability, clicked, previousUsername
+          var usernameAvailable, checkingAvailability, clicked, previousUsername, timeout
           var counter = 0
           
           usernameField.keyup(function(event) {
             var username = usernameField.val()
             if (username != previousUsername) {
+              if (timeout) {
+                clearTimeout(timeout)
+              }
               previousUsername = username
-              showUsernameAjaxIndicator(true)
-              updateButtonState()
-              var id = ++counter
-              $.ajax({ url : "/usernameavailable/" + username}).done(function(available) {
-                if (id == counter) {
-                  usernameAvailable = available
-                  setVisibility(unavailabilityLabel, !available)
-                  showUsernameAjaxIndicator(false)
-                  updateButtonState()
-                }
-              })
+              timeout = setTimeout(function() {
+                showUsernameAjaxIndicator(true)
+                updateButtonState()
+                var id = ++counter
+                $.ajax({ url : "/usernameavailable/" + username}).done(function(available) {
+                  if (id == counter) {
+                    usernameAvailable = available
+                    setVisibility(unavailabilityLabel, !available)
+                    showUsernameAjaxIndicator(false)
+                    updateButtonState()
+                  }
+                })
+              }, 300)
             }
           })
 
