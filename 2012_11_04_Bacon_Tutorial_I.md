@@ -48,9 +48,9 @@ Well, let's not go there.
 There's still a major bug in the code: the username availability responses may return in a different order than they were requested,
 in which case the code may end up showing an incorrect result. Easy to fix? Well, kinda.. Just add a counter and .. Oh, it's sending 
 tons of request even if you just move the cursor with the arrow keys in the username field. Hmm.. One more variable and.. Still too
-many requests... Throttling needed... It's starting to get a bit complicated now... ESCAPE!!!
+many requests... Throttling needed... It's starting to get a bit complicated now... Oh, setTimeout, clearTimeout... DONE.
 
-Here's the code so far, without throttling:
+Here's the code now:
 
           var usernameAvailable, checkingAvailability, clicked, previousUsername, timeout
           var counter = 0
@@ -110,3 +110,5 @@ Here's the code so far, without throttling:
                                         && !checkingAvailability
                                         && !clicked)
           }
+
+Are your eyes burning already?
