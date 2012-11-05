@@ -72,5 +72,15 @@ We used the `map` method to transform each event into the current value of the u
 returns another stream that contains mapped values. Actually it's just like the map function 
 in [underscore.js](http://underscorejs.org/), but for EventStreams and Properties.
 
-Then we converted the stream into a Property by calling `toProperty("")`. The empty string is the initial value
-for the Property, that will be the current value until the first event in the stream.
+After mapping stream values, we converted the stream into a Property by calling `toProperty("")`. The empty string is the initial value
+for the Property, that will be the current value until the first event in the stream. Again, the toProperty method returns a
+new Property, and doesn't change the source stream at all. In fact, all methods in Bacon.js
+return something, and most have no side-effects. That's what you'd expect from a functional programming library, wouldn't you?
+
+The `username` property is in fact ready for use. Just name it and copy it to the source code:
+
+    username = $("#username input").asEventStream("keyup").map(function(event) { return $(event.target).val() }).toProperty("")
+
+I intentionally omitted "var" at this point to make it easier to play with the property in the browser developer console.
+
+Next we could define `fullname` similarly just by copying and pasting. Shall we?
