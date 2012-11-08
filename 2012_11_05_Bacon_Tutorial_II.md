@@ -58,11 +58,11 @@ To capture the `keyup` events on the username field, you can do
 
     $("#username input").asEventStream("keyup")
 
-And you'll get an EventStream of the jQuery keyup events. Try this in your browser Javascript console:
+And you'll get an `EventStream` of the jQuery keyup events. Try this in your browser Javascript console:
 
     $("#username input").asEventStream("keyup").log()
 
-Now the events will be logged into the console, whenever you type something to the username field.
+Now the events will be logged into the console, whenever you type something to the username field (try!).
 To define the `username` property, we'll transform this stream into a stream of textfield values (strings)
 and then convert it into a Property:
 
@@ -88,3 +88,29 @@ The `username` property is in fact ready for use. Just name it and copy it to th
 I intentionally omitted "var" at this point to make it easier to play with the property in the browser developer console.
 
 Next we could define `fullname` similarly just by copying and pasting. Shall we?
+
+Nope. We'll refactor to avoid duplication:
+
+    function textFieldValue(textField) {
+        function value() { return textField.val() }
+        return textField.asEventStream("keyup").map(value).toProperty(value())
+    }
+
+    username = textFieldValue($("#username input"))
+    fullname = textFieldValue($("#fullname input"))
+
+Better! In fact, there's already a `textFieldValue` function available in [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js/blob/master/Bacon.UI.js),
+and it happens to be incluced in the code already so you can just go with
+
+    username = Bacon.UI.textFieldValue($("#username input"))
+    fullname = Bacon.UI.textFieldValue($("#fullname input"))
+
+So, there's a helper library out there where I've shoveled some of the things that seems to repeat in different projects.
+Feel free to contribute!
+
+Anyway, if you put the code above into your source code file, reload the page in the browser and type
+
+    username.log()
+
+to the developer console, you'll see username changes in the console log.
+
