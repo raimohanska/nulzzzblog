@@ -164,3 +164,14 @@ This relies on te fact that the `onValue` method, like many other Bacon.js metho
 parameters. On of them is the above form, which can be translated as "call the `attr` method of the register 
 button and use `disabled` as the first argument". The second argument for the `attr` method will be taken from the
 current property value.
+
+You could also do the same by
+
+    buttonEnabled.not().assign(setEnabled, registerButton)
+
+Now we rely on the `setEnabled` function that's defined in our source code, as well as `registerButton`. The above
+can be translated to "call the `setEnabled` function and use `registerButton` as the first argument".
+
+So, with some Bacon magic, we eliminated the extra anonymous function and improved readability. Om nom nom.
+
+And that's it for now. We'll do AJAX soon.
