@@ -48,7 +48,7 @@ Anyway, you can now open the `index.html` in your browser to see the registratio
 You may also open the file in your favorite editor and have a brief look. You'll find some 
 helper variables and functions for easy access to the DOM elements.
 
-## Capturing input from DOM events
+## Capturing Input from DOM Events
 
 Bacon.js is not a jQuery plugin or dependent on jQuery in any way. However, if it finds
 jQuery, it adds a method to the jQuery object prototype. This method is called `asEventStream`,
@@ -114,3 +114,33 @@ Anyway, if you put the code above into your source code file, reload the page in
 
 to the developer console, you'll see username changes in the console log.
 
+## Mapping Properties and Adding Side-Effects
+
+To get our app to actually do something visible besides writing to the console, we'll define a couple of new
+`Properties`, and assign our first side-effect. Which is enabling/disabling the Register button based on whether
+the user has entered something to both the username and fullname fields.
+
+I'll start by defining the `buttonEnabled` Property:
+
+    function and(a,b) { return a && b }
+    buttonEnabled = usernameEntered.combine(fullnameEntered, and)
+
+So I defined the Property by combining to props together, with the `and` function.
+The `combine` method works so that when either `usernameEntered` and `fullnameEntered`
+changes, the result Property will get a new value. The new value is constructed by applying
+the `and` function to the values of both props. Easy! And can be even easier:
+
+    buttonEnabled = usernameEntered.and(fullnameEntered)
+
+This does the exact same thing as the previos one, but relies on the boolean-logic methods
+(`and`, `or`, `not`) included in Bacon.js.
+
+But something's still missing. We haven't defined `usernameEntered` and `fullnameEntered`. Let's do.
+
+    function nonEmpty(x) { return x.length > 0 }
+    usernameEntered = username.map(nonEmpty)
+    fullnameEntered = fullname.map(nonEmpty)
+    buttonEnabled = usernameEntered.and(fullnameEntered)
+
+So, we used the `map` method again. It's good to know that it's applicable to both `EventStreams` and `Properties`.
+And the `nonEmpty` function is actually already defined in the source code, so you don't actually have to redefine it.
