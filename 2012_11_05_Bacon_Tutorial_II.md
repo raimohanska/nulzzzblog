@@ -132,7 +132,7 @@ the `and` function to the values of both props. Easy! And can be even easier:
 
     buttonEnabled = usernameEntered.and(fullnameEntered)
 
-This does the exact same thing as the previos one, but relies on the boolean-logic methods
+This does the exact same thing as the previous one, but relies on the boolean-logic methods
 (`and`, `or`, `not`) included in Bacon.js.
 
 But something's still missing. We haven't defined `usernameEntered` and `fullnameEntered`. Let's do.
@@ -144,3 +144,23 @@ But something's still missing. We haven't defined `usernameEntered` and `fullnam
 
 So, we used the `map` method again. It's good to know that it's applicable to both `EventStreams` and `Properties`.
 And the `nonEmpty` function is actually already defined in the source code, so you don't actually have to redefine it.
+
+The side-effect part is simple:
+
+    buttonEnabled.onValue(function(enabled) {
+        $("#register button").attr("disabled", !enabled)
+    })
+
+Try it! Now the button gets immediately disabled and will enabled once you type something to both the text fields. 
+Mission accomplished!
+
+But we can do better.
+
+For example,
+
+    buttonEnabled.not().onValue($("#register button"), "attr", "disabled")
+
+This relies on te fact that the `onValue` method, like many other Bacon.js methods, supports different sets of
+parameters. On of them is the above form, which can be translated as "call the `attr` method of the register 
+button and use `disabled` as the first argument". The second argument for the `attr` method will be taken from the
+current property value.
