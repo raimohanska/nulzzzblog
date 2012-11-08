@@ -2,7 +2,7 @@
 
 In my [previous blog posting posting](http://nullzzz.blogspot.fi/2012/11/baconjs-tutorial-part-i-hacking-with.html), I introduced a Registration Form application case study, and then hacked it 
 together with just jQuery, with appalling results. Now we shall try again, using [Bacon.js](https://github.com/raimohanska/bacon.js). 
-Let's start from the basics.
+It'll take a while, of course, but the result will be quite pleasing, so please be patient. We'll start from the very basics.
 
 This is how you implement an app with Bacon.js.
 
