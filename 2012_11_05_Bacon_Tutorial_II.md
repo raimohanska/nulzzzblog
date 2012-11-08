@@ -1,6 +1,10 @@
 ## Bacon.js Tutorial Part II: Get Started
 
-This is how you implement a UI with Bacon.js.
+In my [previous blog posting posting](http://nullzzz.blogspot.fi/2012/11/baconjs-tutorial-part-i-hacking-with.html), I introduced a Registration Form application case study, and then hacked it 
+together with just jQuery, with appalling results. Now we shall try again, using [Bacon.js](https://github.com/raimohanska/bacon.js). 
+Let's start from the basics.
+
+This is how you implement an app with Bacon.js.
 
 1. Capture input into EventStreams and Properties
 2. Transform and compose signals into ones that describe your domain.
@@ -36,7 +40,7 @@ First, you should get the code skeleton on your machine.
     cd bacon-devday-code
     git co -t origin/clean-slate
 
-So now you've cloned the source code and switched to the `clean-slate` branch. 
+So now you've cloned the source code and switched to the [clean-slate](https://github.com/raimohanska/bacon-devday-code/tree/clean-slate) branch. 
 Alternatively you may consider forking the repo first and creating a new branch
 if you will.
 
