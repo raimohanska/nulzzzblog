@@ -45,4 +45,76 @@ stuff with variables? Lets see.
       return this["switch"](function(params) { return Bacon.fromPromise($.ajax(params)) })
     }
 
-Not so complicated after all.
+Not so complicated after all. But let's talk about flatMap now, for a
+while, so that you can build this kind of helpers yourself, too.
+
+## AJAX as a Promise
+
+AJAX is asynchronous, hence the name. This is why we can't use `map` to
+convert requests into responses. Instead, each AJAX request/response
+should be modeled as a separate stream. And it can be done too. So, if
+you do
+
+    $.ajax({ url : "/usernameavailable/jack"})
+
+you'll get a jQuery
+[Deferred](http://api.jquery.com/category/deferred-object/) object. This
+object can be thought of as a
+[Promise](http://wiki.commonjs.org/wiki/Promises/A) of a result. Using
+the Promise API, you can handle the asynchronous results by assigning a
+callback with the `done(callback)` function, as in
+
+    $.ajax({ url : "/usernameavailable/jack"}).done(function(result) { console.log(result)})
+
+If you try this in you browser, you should see `true` printed to the
+console shortly. You can wrap any Promise into an EventStream using
+`Bacon.fromPromise(promise)`. Hence, the following will have the same
+result:
+
+    Bacon.fromPromise($.ajax({ url : "/usernameavailable/jack"})).log()
+
+This is how you make an EventStream of an AJAX request.
+
+## AJAX with `flatMap`
+
+So now we have a stream of AJAX requests and the knowhow to create
+a new stream from a jQuery AJAX. Now we need to
+
+1. Create a response stream for each request in the request stream
+2. Collect the results of all the created streams into a single response
+   stream
+
+This is where `flatMap` comes in:
+
+    function toResultStream(request) {
+      return Bacon.fromPromise($.ajax(request))
+    }
+    availabilityResponse = availabilityRequest.flatMap(toResultStream)
+
+Now you'll have a new EventStream called `availabilityResponse`. What
+`flatMap` does is
+
+1. It calls your function for each value in the source stream
+2. It expects your function to return a new EventStream
+3. It collects the values of all created streams into the result stream
+
+So here we go. The only issue left is that `flatMap` doesn't care about
+response ordering. It spits out the results in the same order as they
+arrive. So, it may (and will) happen that
+
+1. Request A is sent
+2. Request B is sent
+3. Result of request B comes
+4. Result of request A comes
+
+.. and your `availabilityResponse` stream will end with the wrong
+answer, because the latest response is not for the latest request.
+Fortunately there's a method for fixing this exact problem: Just replace
+`flatMap` with `switch` and you're done.
+
+Now that you know how it works, you may as well use the `ajax()` method
+that Bacon.UI provides:
+
+    availabilityResponse = availabilityRequest.ajax()
+
+POW!
