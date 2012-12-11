@@ -1,6 +1,7 @@
 ## Bacon.js Tutorial Part III : AJAX and Stuff
 
-This is the next step in the Bacon.js tutorial series. This time we're
+This is the next step in the Bacon.js tutorial series. I hope you've read
+[Part II](http://nullzzz.blogspot.fi/2012/11/baconjs-tutorial-part-ii-get-started.html) already! This time we're
 going to implement an "as you type" username availability check with
 AJAX. The steps are
 
@@ -9,8 +10,13 @@ AJAX. The steps are
 2. Create a stream of responses by issuing an AJAX request for each
    request event and capturing AJAX responses into the new stream.
 3. Define the `usernameAvailable` Property based on the results
-4. Some side-effect: disable the Register button if username is
+4. Some side-effects: disable the Register button if username is
    unavailable. Also, show a message.
+
+I suggest you checkout the [example code](https://github.com/raimohanska/bacon-devday-code) and switch to the 
+[tutorial-2 branch](https://github.com/raimohanska/bacon-devday-code/tree/tutorial-2)
+which will be the starting point for the coding part of this posting.
+If you just want to have a look at what we'ge got so far, have a [peek](https://github.com/raimohanska/bacon-devday-code/blob/tutorial-2/index.html).
 
 So, at this point we've got a Property called `username` which
 represents the current value entered to the username text input field.
@@ -45,7 +51,7 @@ stuff with variables? Lets see.
       return this["switch"](function(params) { return Bacon.fromPromise($.ajax(params)) })
     }
 
-Not so complicated after all. But let's talk about flatMap now, for a
+Not so complicated after all. But let's talk about `flatMap` now, for a
 while, so that you can build this kind of helpers yourself, too.
 
 ## AJAX as a Promise
@@ -114,7 +120,7 @@ arrive. So, it may (and will) happen that
 .. and your `availabilityResponse` stream will end with the wrong
 answer, because the latest response is not for the latest request.
 Fortunately there's a method for fixing this exact problem: Just replace
-`flatMap` with `switch` and you're done.
+`flatMap` with `flatMapLatest` (previously called "switch") and you're done.
 
 ![switch](https://raw.github.com/wiki/raimohanska/bacon.js/baconjs-switch.png)
 
