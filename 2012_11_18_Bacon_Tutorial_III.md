@@ -130,3 +130,25 @@ that Bacon.UI provides:
     availabilityResponse = availabilityRequest.ajax()
 
 POW!
+
+## The easy part : side-effects
+
+Let's show the "username not available" message. It's actually a stateful thing, so we'll convert
+the `availabilityResponse` stream into a new Property:
+
+    usernameAvailable = availabilityResponse.toProperty(true)
+    
+The boolean value is used to give the property a starting value. So now this property starts with the value `true`
+and after that reflects that value from the `availabilityRequest` stream. The visibility of the message element
+should actually equal to the negation of this property. So why not something like
+
+    usernameAvailable.not().onValue(setVisibility, unavailabilityLabel)
+    
+Once again, this is equivalent to
+
+   usernameAvailable.not().onValue(function(show) { setVisibility(unavailabilityLabel, show) })
+   
+... the idea in the former being that we partially-apply the setVisibility function: Bacon will call the setVisibility
+function with `unavailabilityLabel` fixed as the first argument. The second argument to the function will be
+the value from the `usernameAvailable.not()`.
+    
