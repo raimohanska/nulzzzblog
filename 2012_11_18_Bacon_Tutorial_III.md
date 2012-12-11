@@ -160,5 +160,7 @@ to
 
     buttonEnabled = usernameEntered.and(fullnameEntered).and(usernameAvailable)
     
-That's it for now. Ideas for Part IV?
+That's it for now. The result code can be found in the [tutorial-3 branch](https://github.com/raimohanska/bacon-devday-code/tree/tutorial-3).
+
+Ideas for Part IV?
     
