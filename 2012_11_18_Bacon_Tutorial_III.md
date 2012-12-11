@@ -146,9 +146,19 @@ should actually equal to the negation of this property. So why not something lik
     
 Once again, this is equivalent to
 
-   usernameAvailable.not().onValue(function(show) { setVisibility(unavailabilityLabel, show) })
+    usernameAvailable.not().onValue(function(show) { setVisibility(unavailabilityLabel, show) })
    
-... the idea in the former being that we partially-apply the setVisibility function: Bacon will call the setVisibility
-function with `unavailabilityLabel` fixed as the first argument. The second argument to the function will be
-the value from the `usernameAvailable.not()`.
+... the idea in the former being that we [partially-apply](http://en.wikipedia.org/wiki/Partial_application) 
+the `setVisibility` function: Bacon will call the function with `unavailabilityLabel` fixed as the first argument. 
+The second argument to the function will be the value from the `usernameAvailable.not()` Property.
+
+Finally, we'll also disable the Register button when the username is unavailable. This is done by changing
+
+    buttonEnabled = usernameEntered.and(fullnameEntered)
+    
+to
+
+    buttonEnabled = usernameEntered.and(fullnameEntered).and(usernameAvailable)
+    
+That's it for now. Ideas for Part IV?
     
