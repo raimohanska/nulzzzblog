@@ -48,7 +48,7 @@ task by applying a filter:
 The number of active tasks could be derived
 like this:
 
-    var activeTaskCount = activeTodos.map(".length)
+    var activeTaskCount = activeTodos.map(".length")
 
 To simplify a bit, the `todosProperty` itself would now depend on item 
 additions only, so we could define the property in a very FRP'ish way:
@@ -111,10 +111,10 @@ the `todosProperty`.
 So it happens to be the case that the value of `todosProperty` depends
 on user's interaction with the DOM elements corresponding each Todo item
 on the list. And these DOM elements will be added and removed based on
-changes to the `todosProperty`. Classic chicken'n'egg.
+changes to the `todosProperty`. Classic chicken-egg.
 
-The point of this blog post is to point out this common problem and
-present some of the known solutions.
+The point of this blog post is to present some of the known solutions to
+this problem.
 
 ## Event delegation (a.k.a live bindings)
 
@@ -126,7 +126,7 @@ In TodoMVC, we could try something like
 
 This would give us all keyup events from child elements of
 `listElement`, matching the `.edit` selector. Practically we'd get
-events when the use edits any of the Todo titles on the list.
+events when the user edits any of the Todo titles on the list.
 
 Now we could re-define `todosProperty` to take these events into
 account. But before that we'd have to take care of something: we need to
@@ -161,7 +161,7 @@ Todos and return the modified list. So we might say
       return function(todos) {
         return _.map(todos, function(todo) {
           if (todo.id == edit.id) {
-            return _.clone(todo).extend({ title: edit.title})
+            return _.extend(_.clone(todo), { title: edit.title})
           } else {
             return todo
           }
@@ -223,14 +223,10 @@ We'll use a variable, `todos` in the list model to hold the current list of Todo
           return todos.concat([newTodo])
         })
       }
-      this.modifyTodo = function(todo) {
+      this.modifyTodo = function(updatedTodo) {
         update(function(todos) { 
           return _.map(todos, function(todo) {
-            if (todo.id == edit.id) {
-              return _.clone(todo).extend({ title: edit.title})
-            } else {
-              return todo
-            }
+            return todo.id === updatedTodo.id ? updatedTodo : todo
           })
         })
       }
