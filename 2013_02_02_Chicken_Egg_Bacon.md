@@ -161,7 +161,7 @@ Todos and return the modified list. So we might say
       return function(todos) {
         return _.map(todos, function(todo) {
           if (todo.id == edit.id) {
-            return _.extend(_.clone(todo), { title: edit.title})
+            return _.extend(_.clone(todo), { title: edit.newTitle})
           } else {
             return todo
           }
