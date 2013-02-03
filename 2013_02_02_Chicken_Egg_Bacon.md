@@ -3,7 +3,7 @@
 FRP is easy when you can define your "event network" first and then just
 watch it make profit. For instance, you may define EventStreams and
 Properties based on DOM events, compose them, do some AJAX and show the
-result in the UI, just like we did in the Bacon.js Tutorial parts II & III.
+result in the UI, just like we did in the Bacon.js Tutorial parts [II](http://nullzzz.blogspot.fi/2012/11/baconjs-tutorial-part-ii-get-started.html) & [III](http://nullzzz.blogspot.fi/2012/12/baconjs-tutorial-part-iii-ajax-and-stuff.html).
 
 Sooner or later, though, you'll run into the "chicken and egg" problem:
 you need to base your streams on something that will change on the fly.
