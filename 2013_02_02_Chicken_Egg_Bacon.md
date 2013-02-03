@@ -42,8 +42,10 @@ This model would make it very easy to re-render the list whenever the
 property changes. Also it would be easy to show only completed or active
 task by applying a filter:
 
-    var activeTodos = todosProperty
-      .map(function(todos) { return _.where({ completed: false })})
+```javascript
+var activeTodos = todosProperty
+  .map(function(todos) { return _.where({ completed: false })})
+```
 
 The number of active tasks could be derived
 like this:
@@ -53,10 +55,12 @@ like this:
 To simplify a bit, the `todosProperty` itself would now depend on item 
 additions only, so we could define the property in a very FRP'ish way:
 
-    var newTodos; // stream of new Todo items
-    var todosProperty = addedItems.scan([], function(todos, todo) {
-      return todos.concat([todo])
-    })
+```javascript
+var newTodos; // stream of new Todo items
+var todosProperty = addedItems.scan([], function(todos, todo) {
+  return todos.concat([todo])
+})
+```
 
 In real life, there are more factors involved, but let's stick to this
 assumption for now.
@@ -66,15 +70,17 @@ assumption for now.
 If the list items were not editable, it would be easy to render the list
 based on the `todosProperty`:
 
-    var todosProperty; // a Property containing an Array of Todos
-    var listElement; // jQuery element
-    todosProperty.onValue(function(todos) {
-      listElement.children().remove()
-      _.each(todos, function(todo) {
-        var todoElement = renderTodoView(todo)
-        listElement.append(todoElement)
-      })
-    })
+```javascript
+var todosProperty; // a Property containing an Array of Todos
+var listElement; // jQuery element
+todosProperty.onValue(function(todos) {
+  listElement.children().remove()
+  _.each(todos, function(todo) {
+    var todoElement = renderTodoView(todo)
+    listElement.append(todoElement)
+  })
+})
+```
 
 We just redraw the list each time *anything* changes. The
 list items are not editable so we don't have to capture any data from
@@ -86,21 +92,23 @@ On the other hand, if view was static, i.e. the set of
 displayed items was not changing, things would be quite easy too. 
 Now you could capture the edits for the Todo items with something like this:
 
-    var todos; // list of todos
-    var listElement; // jQuery element
-    var properties = _.map(todos, function(todo) {
-      // call renderer function, returns a jQuery element
-      var todoElement = renderTodoView(todo) 
-      listElement.append(todoElement)
-      // Use Bacon.UI helpers to create Properties for the "title" and "completed" fields
-      return Bacon.combineTemplate({
-        title: Bacon.UI.textFieldValue(todoElement.find(".edit"), todo.title)
-        completed: Bacon.UI.checkBoxValue(todoElement.find(".toggle", todo.completed)
-      })
-    })
-    // now we convert this list of Properties to a single property
-    // each value of which is an Array of Properties
-    var todosProperty = Bacon.combineTemplate(properties)
+```javascript
+var todos; // list of todos
+var listElement; // jQuery element
+var properties = _.map(todos, function(todo) {
+  // call renderer function, returns a jQuery element
+  var todoElement = renderTodoView(todo) 
+  listElement.append(todoElement)
+  // Use Bacon.UI helpers to create Properties for the "title" and "completed" fields
+  return Bacon.combineTemplate({
+    title: Bacon.UI.textFieldValue(todoElement.find(".edit"), todo.title)
+    completed: Bacon.UI.checkBoxValue(todoElement.find(".toggle", todo.completed)
+  })
+})
+// now we convert this list of Properties to a single property
+// each value of which is an Array of Properties
+var todosProperty = Bacon.combineTemplate(properties)
+```
 
 Nice and easy. Render Todos once, collect editor values into a single
 Property using a couple of `combineTemplate` calls and we've re-defined
@@ -122,7 +130,9 @@ One way around that chicken-egg problem with dynamically-created views is to use
 bind event handlers to a containing element, and use a specific selector as the second argument to asEventStream.
 In TodoMVC, we could try something like
 
-    var itemEdits = listElement.asEventStream("keyup", ".edit")
+```javascript
+var itemEdits = listElement.asEventStream("keyup", ".edit")
+```
 
 This would give us all keyup events from child elements of
 `listElement`, matching the `.edit` selector. Practically we'd get
@@ -138,14 +148,16 @@ especially if we used a templating lib like Handlebars.
 Assuming the text input element had this data attribute, we could
 continue like
 
-    var itemEdits = listElement.asEventStream("keyup", ".edit")
-      .map(function(event) {
-        var textField = $(event.target)
-        return {
-          id: textField.attr("data-todo-id"),
-          newTitle: textField.val()
-        }
-      })
+```javascript
+var itemEdits = listElement.asEventStream("keyup", ".edit")
+  .map(function(event) {
+    var textField = $(event.target)
+    return {
+      id: textField.attr("data-todo-id"),
+      newTitle: textField.val()
+    }
+  })
+```
 
 Which would give us a stream of all item edits. For example
 
@@ -157,17 +169,19 @@ number of streams containing *modifications* to the list, where the
 modifications are actually *functions* that take the previous list of
 Todos and return the modified list. So we might say
 
-    var itemModifications = itemEdits.map(function(edit) {
-      return function(todos) {
-        return _.map(todos, function(todo) {
-          if (todo.id == edit.id) {
-            return _.extend(_.clone(todo), { title: edit.newTitle})
-          } else {
-            return todo
-          }
-        })
+```javascript
+var itemModifications = itemEdits.map(function(edit) {
+  return function(todos) {
+    return _.map(todos, function(todo) {
+      if (todo.id == edit.id) {
+        return _.extend(_.clone(todo), { title: edit.newTitle})
+      } else {
+        return todo
       }
     })
+  }
+})
+```
 
 This converts the stream of edits into a stream of functions that will
 transform the list of todos by changing the title of a single todo. We'd 
@@ -175,10 +189,12 @@ also have to convert the stream of new Todos into this form, but
 I'll leave that as an excercise for you. The `todosProperty` would now
 look like
 
-    var todosProperty = itemModifications.merge(itemAdditions)
-      .scan([], function(todos, modification) {
-        return modification(todos)
-      })
+```javascript
+var todosProperty = itemModifications.merge(itemAdditions)
+  .scan([], function(todos, modification) {
+    return modification(todos)
+  })
+```
 
 So, for some cases, we can come by the chicken-egg problem by using
 jQuery smartly. But at least I find this a bit inelegant and not very
@@ -208,29 +224,31 @@ The UI can tell this model to change using methods like `addTodo`,
 
 We'll use a variable, `todos` in the list model to hold the current list of Todos. 
 
-    function TodoListModel() {
-      var todos = []
-      var changes = new Bacon.Bus()
-      this.todoProperty = changes.toProperty(todos)
+```javascript
+function TodoListModel() {
+  var todos = []
+  var changes = new Bacon.Bus()
+  this.todoProperty = changes.toProperty(todos)
 
-      function update(modification) {
-        todos = modification(todos)
-        this.changes.push(todos)
-      }
+  function update(modification) {
+    todos = modification(todos)
+    this.changes.push(todos)
+  }
 
-      this.addTodo = function(newTodo) {
-        update(function(todos) {
-          return todos.concat([newTodo])
-        })
-      }
-      this.modifyTodo = function(updatedTodo) {
-        update(function(todos) { 
-          return _.map(todos, function(todo) {
-            return todo.id === updatedTodo.id ? updatedTodo : todo
-          })
-        })
-      }
-    }
+  this.addTodo = function(newTodo) {
+    update(function(todos) {
+      return todos.concat([newTodo])
+    })
+  }
+  this.modifyTodo = function(updatedTodo) {
+    update(function(todos) { 
+      return _.map(todos, function(todo) {
+        return todo.id === updatedTodo.id ? updatedTodo : todo
+      })
+    })
+  }
+}
+```
 
 This model object now exposes the field `todoProperty` which can be used
 like in the earlier examples. You might notice that I'm using the exact
@@ -262,19 +280,21 @@ If you feel uncomfortable with variables (I do), you might want to
 revise the MVC solution above. Instead of using a variable, we'll use
 `scan`:
 
-    function TodoListModel() {
-      // A Bus of modification functions
-      var modifications = new Bacon.Bus()
-      this.todoProperty = modifications.scan([], function(todos, modification) {
-        return modification(todos)
-      })
+```javascript
+function TodoListModel() {
+  // A Bus of modification functions
+  var modifications = new Bacon.Bus()
+  this.todoProperty = modifications.scan([], function(todos, modification) {
+    return modification(todos)
+  })
 
-      function update(modification) {
-        this.modifications.push(modification)
-      }
-      
-      // no changes to the rest...
-    }
+  function update(modification) {
+    this.modifications.push(modification)
+  }
+
+  // no changes to the rest...
+}
+```
 
 So that's the same `scan` approach as in the pure FRP solution.
 
@@ -287,44 +307,48 @@ Instead of exposing imperative mutators in the model, you can expose
 corresponding Bus objects. This allows you to plug-in source streams to
 the model. The model would look like this:
 
-    function TodoListModel() {
-      function mapTodos(f) { return function (todos) { return _.map(todos, f) } }
+```javascript
+function TodoListModel() {
+  function mapTodos(f) { return function (todos) { return _.map(todos, f) } }
 
-      function modifyTodo(updatedTodo) {
-        return mapTodos(function (todo) {
-          return todo.id === updatedTodo.id ? updatedTodo : todo
-        })
-      }
-      function addTodo(newTodo) {
-        return function (todos) {
-          return todos.concat([newTodo])
-        }
-      }
-
-      this.todoAdded = new Bacon.Bus()
-      this.todoModified = new Bacon.Bus()
-
-      var modifications = this.todoAdded.map(addTodo)
-                          .merge(this.todoModified.map(modifyTodo))
-
-      this.todoProperty = modifications.scan([], function (todos, modification) {
-        return modification(todos)
-      })
+  function modifyTodo(updatedTodo) {
+    return mapTodos(function (todo) {
+      return todo.id === updatedTodo.id ? updatedTodo : todo
+    })
+  }
+  function addTodo(newTodo) {
+    return function (todos) {
+      return todos.concat([newTodo])
     }
+  }
+
+  this.todoAdded = new Bacon.Bus()
+  this.todoModified = new Bacon.Bus()
+
+  var modifications = this.todoAdded.map(addTodo)
+                      .merge(this.todoModified.map(modifyTodo))
+
+  this.todoProperty = modifications.scan([], function (todos, modification) {
+    return modification(todos)
+  })
+}
+```
 
 It the View code you'll plug-in streams to the exposed Buses `todoAdded`
 and `todoModified`. For instance, this is how you might implement a
 simplified view responsible of rendering a single Todo row.
 
-    function TodoView(todo, listModel) {
-      this.element = render(todo) // use Handlebars or whatnot
-      var titleChanges = this.element.find(".edit").asEventStream("keyup")
-        .map(".target").map($).map(".val")
-      var modifications = titleChanges.map(function(title) {
-        return { id: todo.id, title: title, completed: todo.completed }
-      })
-      listModel.todoModified.plug(modifications)
-    }
+```javascript
+function TodoView(todo, listModel) {
+  this.element = render(todo) // use Handlebars or whatnot
+  var titleChanges = this.element.find(".edit").asEventStream("keyup")
+    .map(".target").map($).map(".val")
+  var modifications = titleChanges.map(function(title) {
+    return { id: todo.id, title: title, completed: todo.completed }
+  })
+  listModel.todoModified.plug(modifications)
+}
+```
 
 One advantage of this approach, compared to the previous one with
 the imperative mutators is that when you expose the buses `todoAdded`
@@ -342,14 +366,16 @@ example, in `TodoView` you might have a `deleted` stream that signals
 the deletion of this particular Todo. Just add `.takeUntil(deleted)` to
 your modifications stream and it will end on deletion:
 
-    function TodoView(todo, listModel) {
-      // .. begins as before ..
-      var deleted = listModel.todoProperty.changes.filter(function(todos) {
-        return _.where({ id: todo.id}).length == 0
-      })
-      deleted.onValue(function() { this.element.remove() })
-      listModel.todoModified.plug(modifications.takeUntil(deleted))
-    }
+```javascript
+function TodoView(todo, listModel) {
+  // .. begins as before ..
+  var deleted = listModel.todoProperty.changes.filter(function(todos) {
+    return _.where({ id: todo.id}).length == 0
+  })
+  deleted.onValue(function() { this.element.remove() })
+  listModel.todoModified.plug(modifications.takeUntil(deleted))
+}
+```
 
 You may have a look at the full [Bacon.js TodoMVC implementation](https://github.com/raimohanska/todomvc/blob/bacon-jquery/labs/architecture-examples/baconjs/js/app.js)
 for reference. I'm sorry for the tab indentation. That's the standard for TodoMVC.
