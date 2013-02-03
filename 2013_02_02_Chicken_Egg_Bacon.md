@@ -1,4 +1,4 @@
-# Chicken, Egg, Bacon
+# Chicken, Egg and Bacon.js
 
 FRP is easy when you can define your "event network" first and then just
 watch it make profit. For instance, you may define EventStreams and
