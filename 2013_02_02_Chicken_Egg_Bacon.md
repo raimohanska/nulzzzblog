@@ -3,7 +3,7 @@
 FRP is easy when you can define your "event network" first and then just
 watch it make profit. For instance, you may define EventStreams and
 Properties based on DOM events, compose them, do some AJAX and show the
-result in the UI, just like we did in the Bacon.js Tutorial 2-3 posts.
+result in the UI, just like we did in the Bacon.js Tutorial parts II & III.
 
 Sooner or later, though, you'll run into the "chicken and egg" problem:
 you need to base your streams on something that will change on the fly.
@@ -24,7 +24,7 @@ and Completed views. Stuff like that.
 Assuming you've read the previous log posts and done some Bacon.js
 coding, you'd hack most of the app together in a couple of hours, save
 for the tough part. The tough part is the dynamic view,
-say TodoListView, which lists the Todos that match the current filter
+say `TodoListView`, which lists the `Todos` that match the current filter
 (All/Active/Completed). In fact, the only tough part of the view is that
 the view also allows you to edit and delete the tasks.
 
@@ -326,4 +326,50 @@ simplified view responsible of rendering a single Todo row.
       listModel.todoModified.plug(modifications)
     }
 
-You may have a look at the full [Bacon.js TodoMVC implementation](https://github.com/raimohanska/todomvc/blob/bacon-jquery/labs/architecture-examples/baconjs/js/app.js) for reference. I'm sorry for the tab indentation. That's the standard for TodoMVC.
+One advantage of this approach, compared to the previous one with
+the imperative mutators is that when you expose the buses `todoAdded`
+and `todoModified` you're also exposing the same things as streams. So
+now your View components can subscribe to these streams to react to Todo
+additions and modifications!
+
+There's a little catch here too: you should make sure you apply an "end
+condition" to the input streams you plug into the model Buses. If you don't do
+this, the Bus will have references to the streams even after the
+corresponding UI components have been removed. In practise, you'll
+probably remove the UI components based on an event in some EventStream,
+so you can use this same stream for ending the input streams. For
+example, in `TodoView` you might have a `deleted` stream that signals
+the deletion of this particular Todo. Just add `.takeUntil(deleted)` to
+your modifications stream and it will end on deletion:
+
+    function TodoView(todo, listModel) {
+      // .. begins as before ..
+      var deleted = listModel.todoProperty.changes.filter(function(todos) {
+        return _.where({ id: todo.id}).length == 0
+      })
+      deleted.onValue(function() { this.element.remove() })
+      listModel.todoModified.plug(modifications.takeUntil(deleted))
+    }
+
+You may have a look at the full [Bacon.js TodoMVC implementation](https://github.com/raimohanska/todomvc/blob/bacon-jquery/labs/architecture-examples/baconjs/js/app.js)
+for reference. I'm sorry for the tab indentation. That's the standard for TodoMVC.
+Also, don't expect the implementation to be *exactly* the same as in any
+of the above examples. But it definitely is based on a TodoListModel
+that exposes Buses and streams to the Views.
+
+# Conclusion
+
+We've actually covered two related problems in the pure FRP approach,
+both of which stem from having to introduce some Views before the Model
+because the Model depends on the Views.
+
+1. The Chicken-Egg Problem - your Model depends on your Views which
+   depend on the Model
+2. The Coupling Problem - you have to Introduce some View components
+   before the Model, so you cannot properly modularize your application
+
+The first problem in isolation can be in some cases solved by using
+techniques like jQuery event delegation. But to address the problem in
+the bigger picture, you need to apply architectural solutions, such as
+introducing a Model object with either mutator functions or pluggable
+Bus objects.
