@@ -12,8 +12,9 @@ addTodo = function(newTodo) {
 ```
 
 This still all fine. Except that with `Bacon.update` you can do the same
-thing with much less code that's easier to read. So, here's the original
-`TodoListModel` from my first TodoMVC implementation:
+thing with much less code that's easier to read. I'll show you the
+original `TodoListModel` code just to give an impression of the amount
+of code:
 
 ```js
 function TodoListModel() {
@@ -48,9 +49,7 @@ function TodoListModel() {
 }
 ```
 
-Quite a piece, isn't it? That's mainly because lambdas in Javascript are quite verbose. But still.
-
-Using `Bacon.update` this can be shrunk to just
+.. and here's the same when `Bacon.update` is applied:
 
 ```js
   function TodoListModel() {
@@ -76,4 +75,19 @@ Using `Bacon.update` this can be shrunk to just
 
     this.allTodos.changes().onValue(storage.writeTodos)
   }
+```
+
+Makes it easier, doesn't it?
+
+So, `Bacon.update` is quite handy when you have some stateful thing
+(todo list, shopping cart ...) that changes on multiple events. You give
+it the initial state and any number of patterns that will apply events
+to current state. For example:
+
+```js
+var cartContents = Bacon.update(
+  [],
+  [addItem], function(items, newItem) { return items.concat([newItem]) },
+  [emptyCart], function(items) { return [] }
+)
 ```
