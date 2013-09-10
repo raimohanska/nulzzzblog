@@ -9,6 +9,7 @@ addTodo = function(newTodo) {
     return todos.concat([newTodo])
   })
 }
+```
 
 This still all fine. Except that with `Bacon.update` you can do the same
 thing with much less code that's easier to read. So, here's the original
