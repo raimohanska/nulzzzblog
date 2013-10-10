@@ -28,3 +28,7 @@ You might have guessed this. The minute you add your first asynchronous thing in
     })
 
 This will fix a single test case. Everytime you find that some test is unreliable, you add some kind of an ad-hoc asynchoronous wait. Now step to a situation where you have a hundred tests and you change your application so that something that used to be synchronous is now asynchronous. You'll get some failing tests. You may get tests that fail on some browsers and only sometimes. Horror!
+
+## Solution
+
+To me it seems that TODO
