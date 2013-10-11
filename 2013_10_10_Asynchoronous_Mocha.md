@@ -45,9 +45,4 @@ animations, transitions, page loads and whatnot have finished.
 
 Is this hard? Shouldn't be. Just monkey-patch `before` and `it` to
 include these steps. Gonna try this and write more afterwards. What do
-you think?the framework ensures that all AJAX calls, animations,
-transitions, page loads and whatnot have finished.
-
-Is this hard? Shouldn't be. Just monkey-patch `before` and `it` to
-include these steps. Gonna try this and write more afterwards. What do
 you think?
