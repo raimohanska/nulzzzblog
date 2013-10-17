@@ -106,7 +106,7 @@ Now you'll have a new EventStream called `availabilityResponse`. What
 
 Like in this diagram.
 
-![flatMap](https://raw.github.com/wiki/raimohanska/bacon.js/baconjs-flatmap.png)
+![flatMap](https://raw.github.com/wiki/baconjs/bacon.js/baconjs-flatmap.png)
 
 So here we go. The only issue left is that `flatMap` doesn't care about
 response ordering. It spits out the results in the same order as they
@@ -122,7 +122,7 @@ answer, because the latest response is not for the latest request.
 Fortunately there's a method for fixing this exact problem: Just replace
 `flatMap` with `flatMapLatest` (previously called "switch") and you're done.
 
-![switch](https://raw.github.com/wiki/raimohanska/bacon.js/baconjs-switch.png)
+![switch](https://raw.github.com/wiki/baconjs/bacon.js/baconjs-switch.png)
 
 Now that you know how it works, you may as well use the `ajax()` method
 that Bacon.UI provides:
