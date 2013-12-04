@@ -9,13 +9,13 @@ I've got a lot of question along the lines of "can I integrate Bacon with X". An
 - General unary callbacks are supported with Bacon.fromCallback
 - There's probably a plenty of wrappers I haven't listed here. Let's put them on the [Wiki](https://github.com/baconjs/bacon.js/wiki/Related-projects), shall we?
 
-In case X doesn't fall into any of these categories, you may have to roll your own. And that's not hard either. Using Bacon.fromBinder, you should be able to plug into any data source quite easily. In this blog posting, I'll show some examples of just that.
+In case X doesn't fall into any of these categories, you may have to roll your own. And that's not hard either. Using `Bacon.fromBinder`, you should be able to plug into any data source quite easily. In this blog posting, I'll show some examples of just that.
 
 You might want to take a look at Bacon.js [readme](https://github.com/baconjs/bacon.js?utm_source=javascriptweekly&utm_medium=email) for documentation and reference.
 
 ### Example 1: Timer
 
-Let's start with a simple example. Suppose you want to create a stream that produces timestamp events each second. There are options here.
+Let's start with a simple example. Suppose you want to create a stream that produces timestamp events each second. Easy!
 
 Using `Bacon.interval`, you'll get a stream that constantly produces a value. Then you can use `map` to convert the values into timestamps.
 
@@ -25,7 +25,7 @@ Using `Bacon.fromPoll`, you can have Bacon call your function each 1000 millisec
 
     Bacon.fromPoll(1000, function() { return new Date().getTime() })
 
-3) Using Bacon.fromBinder is an overkill here, but if you want to learn to roll your own streams, this might be a nice example:
+So, clearly Using `Bacon.fromBinder` is an overkill here, but if you want to learn to roll your own streams, this might be a nice example:
 
 ```javascript
 var timer = Bacon.fromBinder(function(sink) {
