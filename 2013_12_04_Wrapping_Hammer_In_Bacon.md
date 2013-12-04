@@ -68,7 +68,7 @@ function hammerStream(element, event) {
 }
 ```
 
-Try it out: http://jsfiddle.net/axDJy/1/
+Try it out: http://jsfiddle.net/axDJy/3/
 
 It's exactly the same thing as with the above example. In my "subscribe" function, I register an event handler to Hammer.js. In this event handler I push a value "hammer time!" to the stream. I return a function that will de-register the hammer event handler.
 
