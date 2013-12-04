@@ -74,4 +74,4 @@ It's exactly the same thing as with the above example. In my "subscribe" functio
 
 ### More examples
 
-You're not probably surprised at the fact that all the included wrappers and generators ($.asEventStream, Bacon.fromNodeCallback, Bacon.interval, Bacon.fromPoll) are implemented on top of Bacon.fromBinder. So, for more examples, just dive into the Bacon.js codebase itself.
+You're not probably surprised at the fact that all the included wrappers and generators (including `$.asEventStream`, `Bacon.fromNodeCallback`, `Bacon.interval`, `Bacon.fromPoll` etc) are implemented on top of Bacon.fromBinder. So, for more examples, just dive into the Bacon.js codebase itself.
