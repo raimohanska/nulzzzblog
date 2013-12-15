@@ -54,7 +54,7 @@ What if, just what if, you could write it like this instead:
   assertEquals(666, customerId)
 ```
 
-In this form, the asynchronous calls do not break the flow. You just indicate an asynchronous call with the arrow symbo `<-`. Nice?
+In this form, the asynchronous calls do not break the flow. You just indicate an asynchronous call with the arrow symbol `<-`. Nice?
 
 Shouldn't be too hard to implement a precompiler that would automatically convert this to the former callbacky form.
 
