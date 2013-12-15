@@ -192,4 +192,6 @@ Had we this notation in Javascript, we could use is for surprisingly many things
 
 For the record, the [Roy](http://roy.brianmckenna.org/) language supports a very similar do-notation as described above. The thing with Roy is though that it is very remote to base Javascript and is not an easy replacement as-is. But on the Roy website, you can play with the do-notation (Monad) examples and see how it desugars the code.
 
-The `Async` Monad here is perhaps more widely known as the [Continuation Monad](http://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Cont.html). For the intended purpose (asynchronous testing in Javascript) a bit better suited Monad would be one that allows error propagation too, possibly using [Node-style callbacks](http://howtonode.org/control-flow-part-ii). In any case, all code here goes without warranties as I haven't actually run it. KTHXBYE
+The `Async` Monad here is perhaps more widely known as the [Continuation Monad](http://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Cont.html). For the intended purpose (asynchronous testing in Javascript) a bit better suited Monad would be one that allows error propagation too, possibly using [Node-style callbacks](http://howtonode.org/control-flow-part-ii). In any case, all code here goes without warranties as I haven't actually run it.
+
+Oh, and I'm sure some of you know how to write compilers and stuff, so pls make this precompiler and ship it to me on Github. KTHXBYE
