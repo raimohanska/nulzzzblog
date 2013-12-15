@@ -42,7 +42,7 @@ And when things get async, you will end up with code looking like this.
   }
 ```
 
-Not a very complex case yet, yet a Callback Hell is starting to form here.
+Not a very complex case yet, yet a [Callback Hell](http://travistidwell.com/presentations/jquery-node-phantom/images/callback_hell.jpg) is starting to form here.
 
 What if, just what if, you could write it like this instead:
 
