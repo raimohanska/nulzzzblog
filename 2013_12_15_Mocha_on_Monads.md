@@ -1,5 +1,7 @@
 ## Mocha on Monads
 
+** Disclaimer: This article can be classified as a Monad Tutorial and therefor considered harmful. Proceed at own risk **
+
 The challenge in testing a browser application with [Mocha](http://visionmedia.github.io/mocha/) is that the application behaves asynchronously because of things like page transitions and AJAX. This means that the test code often has to wait for some condition before continuing. And, as we all know, Javascript doesn't have threads and thus we cannot block when we wait. This means we need to use callbacks.
 
 And because writing asynchronous code is tough, the test writer (me) avoids it and favors writing tests synchronously except when absolutely necessary. And sometimes they write a test synchronously even if the application actually behaves asynchronously. And often they get away with it, because the test passes. Until it doesn't. It may, for instance, pass on Chrome in 99% of the cases. But when you have a hundred test cases, that's not going to be enough.
@@ -181,4 +183,4 @@ Had we this notation in Javascript, we could use is for surprisingly many things
 
 For the record, the [Roy](http://roy.brianmckenna.org/) language supports a very similar do-notation as described above. The thing with Roy is though that it is very remote to base Javascript and is not an easy replacement as-is. But on the Roy website, you can play with the do-notation (Monad) examples and see how it desugars the code.
 
-TODe: Roy, Continuation Monad, monad tutorial disclaimer
+The `Async` Monad here is perhaps more widely known as the [Continuation Monad](http://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Cont.html). For the intended purpose (asynchronous testing in Javascript) a bit better suited Monad would be one that allows error propagation too, possibly using [Node-style callbacks](http://howtonode.org/control-flow-part-ii).
