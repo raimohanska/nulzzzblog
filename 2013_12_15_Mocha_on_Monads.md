@@ -1,14 +1,14 @@
 ## Mocha on Monads
 
-The challenge in testing a browser application with Mocha is that the application behaves asynchronously because of things like page transitions and AJAX. This means that the test code often has to wait for some condition before continuing. And, as we all know, Javascript doesn't have threads and thus we cannot block when we wait. This means we need to use callbacks.
+The challenge in testing a browser application with [Mocha](http://visionmedia.github.io/mocha/) is that the application behaves asynchronously because of things like page transitions and AJAX. This means that the test code often has to wait for some condition before continuing. And, as we all know, Javascript doesn't have threads and thus we cannot block when we wait. This means we need to use callbacks.
 
-And because writing asynchronous code is tough, the test writer avoids it and favors writing tests synchronously except when absolutely necessary. And sometimes they write a test synchronously even if the application actually behaves asynchronously. And often they get away with it, because the test passes. Until it doesn't. It may, for instance, pass on Chrome in 99% of the cases. But when you have a hundred test cases, that's not going to be enough
+And because writing asynchronous code is tough, the test writer (me) avoids it and favors writing tests synchronously except when absolutely necessary. And sometimes they write a test synchronously even if the application actually behaves asynchronously. And often they get away with it, because the test passes. Until it doesn't. It may, for instance, pass on Chrome in 99% of the cases. But when you have a hundred test cases, that's not going to be enough.
 
 And when something that used to be synchronous becomes asynchronous, shit will really hit the fan if the tests were sloppy. In my experience this happens quite often. For example, you add an AJAX call somewhere. Bang!
 
-Mocha supports asynchronous testing for sure. You can use callback-style functions in your `before`s and `it`s. When you need to perform a long sequence of (possibly asynchrous) operations, you may use a library such as [zhain](https://github.com/mtkopone/zhain) and youre a bit better off.
+Mocha supports asynchronous testing for sure. You can use callback-style functions in your `before`s and `it`s. When you need to perform a long sequence of (possibly asynchrous) operations, you may use a library such as [zhain](https://github.com/mtkopone/zhain) and you're a bit better off.
 
-But you still can't beat the convenience of the normal synchronous Javascript blocks, when it comes to passing any state from one of your async operations to another. You will end up with code looking like this.
+But you still can't beat the convenience of normal synchronous Javascript blocks, when it comes to passing any state from one of your async operations to another. You will end up with code looking like this.
 
 ```js
   findElement("#loginForm button") (function(button) {
@@ -177,4 +177,6 @@ As you probably know, what I described above is a Javascripty version of Haskell
 
 Monads are just things that support `of` and `chain`. These functions have different names in different environments, but here I've chosen to use the names used in the [fantasy-land](https://github.com/fantasyland/fantasy-land) specification.
 
-Had we this notation in Javascript, we could use is for surprisingly many things, including Promises and Lists. And the notation is not the only benefit of the Monads; there's a lot more you can build on top of this common interface.
+Had we this notation in Javascript, we could use is for surprisingly many things, including [Promises](https://github.com/fantasyland/fantasy-promises) and [Options](https://github.com/fantasyland/fantasy-options). And the notation is not the only benefit of the Monads; there's a lot more you can build on top of this common interface.
+
+TODO: Roy, Continuation Monad, monad tutorial disclaimer
