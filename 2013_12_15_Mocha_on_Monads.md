@@ -173,10 +173,12 @@ Async.of = Async.prototype.of = function(value) {
 
 ## Conclusion
 
-As you probably know, what I described above is a Javascripty version of Haskell's [do-notation](http://en.wikibooks.org/wiki/Haskell/do_Notation) for Monads.
+As you probably know, what I described above is a Javascripty version of Haskell's [do-notation](http://en.wikibooks.org/wiki/Haskell/do_Notation) for Monads. The process of conververting do-notation into calls to the Monad methods is called *desugaring*.
 
-Monads are just things that support `of` and `chain`. These functions have different names in different environments, but here I've chosen to use the names used in the [fantasy-land](https://github.com/fantasyland/fantasy-land) specification.
+But simply put, Monads are just things that support `of` and `chain`. These functions have different names in different environments, but here I've chosen to use the names used in the [fantasy-land](https://github.com/fantasyland/fantasy-land) specification. TODO: links to more info on monads
 
 Had we this notation in Javascript, we could use is for surprisingly many things, including [Promises](https://github.com/fantasyland/fantasy-promises) and [Options](https://github.com/fantasyland/fantasy-options). And the notation is not the only benefit of the Monads; there's a lot more you can build on top of this common interface.
 
-TODO: Roy, Continuation Monad, monad tutorial disclaimer
+For the record, t he [Roy](http://roy.brianmckenna.org/) language supports a very similar do-notation as described above. The thing with Roy is though that it is very remote to base Javascript and is not an easy replacement as-is. But on the Roy website, you can play with the do-notation (Monad) examples and see how it desugars the code.
+
+TODe: Roy, Continuation Monad, monad tutorial disclaimer
