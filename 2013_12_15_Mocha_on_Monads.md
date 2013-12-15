@@ -1,6 +1,6 @@
 ## Mocha on Monads
 
-**Disclaimer: This article can be classified as a Monad Tutorial and therefor considered harmful. Proceed at own risk.**
+** Disclaimer: This article can be classified as a Monad Tutorial and therefor considered harmful. Proceed at own risk **
 
 The challenge in testing a browser application with [Mocha](http://visionmedia.github.io/mocha/) is that the application behaves asynchronously because of things like page transitions and AJAX. This means that the test code often has to wait for some condition before continuing. And, as we all know, Javascript doesn't have threads and thus we cannot block when we wait. This means we need to use callbacks.
 
@@ -10,7 +10,16 @@ And when something that used to be synchronous becomes asynchronous, shit will r
 
 Mocha supports asynchronous testing for sure. You can use callback-style functions in your `before`s and `it`s. When you need to perform a long sequence of (possibly asynchrous) operations, you may use a library such as [zhain](https://github.com/mtkopone/zhain) and you're a bit better off.
 
-But you still can't beat the convenience of normal synchronous Javascript blocks, when it comes to passing any state from one of your async operations to another. You will end up with code looking like this.
+But you still can't beat the convenience of normal synchronous Javascript blocks, when it comes to passing any state from one of your async operations to another. So you'll start with code like this.
+
+```js
+  var button = $("#loginForm button")
+  button.click()
+  var customerId = $("#customerId").text()
+  assertEquals(666, customerId)
+```
+
+And when things get async, you will end up with code looking like this.
 
 ```js
   findElement("#loginForm button") (function(button) {
