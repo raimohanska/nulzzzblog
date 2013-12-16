@@ -1,6 +1,6 @@
 ## Mocha on Monads
 
-**Disclaimer: This article can be classified as a Monad Tutorial and therefor considered harmful. Proceed at own risk.**
+**Disclaimer: This article can be classified as a Monad Tutorial and therefore considered harmful. Proceed at own risk.**
 
 The challenge in testing a browser application with [Mocha](http://visionmedia.github.io/mocha/) is that the application behaves asynchronously because of things like page transitions and AJAX. This means that the test code often has to wait for some condition before continuing. And, as we all know, Javascript doesn't have threads and thus we cannot block when we wait. This means we need to use callbacks.
 
