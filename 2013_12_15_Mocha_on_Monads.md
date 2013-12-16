@@ -184,14 +184,20 @@ Async.of = Async.prototype.of = function(value) {
 
 ## Conclusion
 
-As you probably know, what I described above is a Javascripty version of Haskell's [do-notation](http://en.wikibooks.org/wiki/Haskell/do_Notation) for Monads. The process of conververting do-notation into calls to the Monad methods is called *desugaring*.
+As you might have deduced already, what I described above is a Javascripty version of Haskell's [do-notation](http://en.wikibooks.org/wiki/Haskell/do_Notation) for Monads. The process of conververting do-notation into calls to the Monad methods is called *desugaring*.
 
-But simply put, Monads are just things that support `of` and `chain`. These functions have different names in different environments, but here I've chosen to use the names used in the [fantasy-land](https://github.com/fantasyland/fantasy-land) specification. TODO: links to more info on monads
+But simply put, Monads are just things that support `of` and `chain`. These functions have different names in different environments (`return` and `>>=` in Haskell), but here I've chosen to use the names used in the [fantasy-land](https://github.com/fantasyland/fantasy-land) specification for Javascript.
 
 Had we this notation in Javascript, we could use is for surprisingly many things, including [Promises](https://github.com/fantasyland/fantasy-promises) and [Options](https://github.com/fantasyland/fantasy-options). And the notation is not the only benefit of the Monads; there's a lot more you can build on top of this common interface.
 
-For the record, the [Roy](http://roy.brianmckenna.org/) language supports a very similar do-notation as described above. The thing with Roy is though that it is very remote to base Javascript and is not an easy replacement as-is. But on the Roy website, you can play with the do-notation (Monad) examples and see how it desugars the code.
+For the record, the [Roy](http://roy.brianmckenna.org/) language supports a very similar do-notation as described above. The thing with Roy is though that it is quite remote to actual Javascript and is not an easy replacement as-is. But on the Roy website, you can play with the do-notation (Monad) examples and see how it desugars the code, in case you're interested.
 
 The `Async` Monad here is perhaps more widely known as the [Continuation Monad](http://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Cont.html). For the intended purpose (asynchronous testing in Javascript) a bit better suited Monad would be one that allows error propagation too, possibly using [Node-style callbacks](http://howtonode.org/control-flow-part-ii). In any case, all code here goes without warranties as I haven't actually run it.
 
-Oh, and I'm sure some of you know how to write compilers and stuff, so pls make this precompiler and ship it to me on Github. KTHXBYE
+Oh, and I'm sure some of you know how to write compilers and stuff, so pls make this precompiler and ship it to me on Github.
+
+*... some time passes ...*
+
+Oh, indeed the gods have forseen my desire and implemented a [sweet.js](http://sweetjs.org/) based [do-notations implementation](https://github.com/puffnfresh/sweet-fantasies/blob/master/test/do.js) for Javascript.
+
+KTHXBYE.
