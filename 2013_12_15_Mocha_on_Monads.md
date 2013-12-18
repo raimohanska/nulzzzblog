@@ -107,12 +107,12 @@ We might implement it like here.
   }
   Async.prototype.chain = function(f) {
     var self = this
-    return function(callback) {
+    return Chain(function(callback) {
       self.run(function(value) {
         var next = f(value)
         next.run(callback)
       })
-    }    
+    })
   }
 ```
 
