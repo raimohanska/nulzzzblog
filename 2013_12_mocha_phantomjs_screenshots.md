@@ -4,7 +4,7 @@ with some help got screenshots working in the [open-source application](https://
 for the Board of Education in Finland. Then I made a [pull request](https://github.com/metaskills/mocha-phantomjs/pull/165) and now I'm
 telling you how to make screenshots work.
 
-For now, you'll have to start by using [my fork] of `mocha-phantomjs` by changing your `package.json` a bit:
+For now, you'll have to start by using my fork of `mocha-phantomjs` by changing your `package.json` a bit:
 
 ````
   ...
