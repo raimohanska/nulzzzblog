@@ -4,16 +4,7 @@ with some help got screenshots working in the [open-source application](https://
 for the Board of Education in Finland. Then I made a [pull request](https://github.com/metaskills/mocha-phantomjs/pull/165) and now I'm
 telling you how to make screenshots work.
 
-A couple of days later, version 3.5.2 with screenshot support was released. So, first make sure you're using 3.5.2 or later:
-
-````
-  ...
-    "mocha-phantomjs": "^3.5.2",
-    "phantomjs": "^1.9",
-  ...
-```
-
-Then, in your test code, write a helper for generating a screenshot on demand:
+So, in your test code, write a helper for generating a screenshot on demand:
 
 ```javascript
 function takeScreenshot() {
@@ -39,3 +30,5 @@ If you want to generate a screenshot for each test failure you just add the foll
 ```
 
 And next time you run your `mocha-phantomjs` tests, KABOOM, you have screenshots. Good times!
+
+Update: A couple of days later, version 3.5.2 with screenshot support was released!
