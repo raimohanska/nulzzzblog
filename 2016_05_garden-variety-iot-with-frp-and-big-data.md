@@ -64,3 +64,13 @@ Anyways, now that I've defined when the fountain should be running, I can actual
 ```coffeescript
 houm.controlLight "fountain", fountainP
 ````
+
+My [Reactive IoT Platform](https://github.com/raimohanska/sensor-server) currently has these API's:
+
+- `houm` for controlling lighting and electric appliances
+- `time` for time-of-day event streams and Properties, such as `hourOfDayP`
+- `sun` for sunrise/sunset information and sun brightness in my location
+- `sensors` for sensor input data (temperature, humidity, etc)
+- `motion` motion sensor data, room occupied indication with throttling
+
+The platform is not quite documented yet, but I can write some docs if there's interest. Please add a Star and create an Issue if you want more docs!
