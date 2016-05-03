@@ -15,7 +15,7 @@ fountainP = dayTimeP.and(freezingP.not()).and(someoneHomeP)
 houm.controlLight "fountain", fountainP
 ````
 
-This is possible because I’ve already installed some sensors around my house, measusing things like temperature, 
+This is possible because I’ve already installed some sensors around my house, measuring things like temperature, 
 humidity and lightness here and there. Some sensors I've bought and many have I soldered together from stuff like ESP-8266 or Arduino microcontrollers, Raspberry Pis and numerous sensor modules.
 I’ve even designed a printed circuit board that has motion detection and a bunch of measurements. 
 
