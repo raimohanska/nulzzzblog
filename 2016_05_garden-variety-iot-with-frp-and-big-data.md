@@ -2,7 +2,9 @@
 
 Today I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing.
 
-I did this with this piece of code:
+![fountain](images/fountain.jpg)
+
+I integrated my fountain pump into my home automation system this with this piece of code:
 
 ```coffeescript
 outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
@@ -14,8 +16,12 @@ houm.controlLight "Suihkulähde", fountainP
 ````
 
 This is possible because I’ve already installed some sensors around my house, measusing things like temperature, 
-humidity and lightness here and there. 
+humidity and lightness here and there. Some sensors I've bought and many have I soldered together from stuff like ESP-8266 or Arduino microcontrollers, Raspberry Pis and numerous sensor modules.
 I’ve even designed a printed circuit board that has motion detection and a bunch of measurements. 
+
+![raimo-unit](images/raimo-unit.jpg)
+
+
 Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up, that allows me to turn 
 lights and actually any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
 
