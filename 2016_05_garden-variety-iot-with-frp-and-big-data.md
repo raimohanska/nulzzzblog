@@ -1,6 +1,6 @@
 ## Garden Variety IoT with Big Data and FRP
 
-Today I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing.
+Today I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing outside.
 
 ![fountain](images/fountain.jpg)
 
@@ -10,9 +10,9 @@ I integrated my fountain pump into my home automation system this with this piec
 outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
 dayTimeP = time.hourOfDayP.map((hours) -> hours >= 6 || hours <= 22)
 freezingP = outdoorTempP.map((t) -> t < 0)
-someoneHomeP = motion.occupiedP("olohuone", time.oneHour * 8)
+someoneHomeP = motion.occupiedP("livingroom", time.oneHour * 8)
 fountainP = dayTimeP.and(freezingP.not()).and(someoneHomeP)
-houm.controlLight "Suihkulähde", fountainP
+houm.controlLight "fountain", fountainP
 ````
 
 This is possible because I’ve already installed some sensors around my house, measusing things like temperature, 
@@ -51,10 +51,16 @@ Here I've used the `map` method of `outdoorTempP` to transform the temperature v
 Finally, I add one more property from the `motion` API and combine all of the data using boolean logic:
 
 ```coffeescript
-someoneHomeP = motion.occupiedP("olohuone", time.oneHour * 8)
+someoneHomeP = motion.occupiedP("livingroom", time.oneHour * 8)
 fountainP = dayTimeP.and(freezingP.not()).and(someoneHomeP)
 ```
 
 So the final `fountainP` property will hold `true` when it's daytime, not freezing and someone's home. 
 
 Admittedly my "someone home" property is not very accurate, as it's based on whether there's been motion in the livingroom in the last 8 hours. I'll add an outdoor motion sensor later for more accuracy, but this will do for now. It's not fatal to have a fountain running even when I'm not home. But at least it won't be running when I'm on a 2-week vacation in Africa. During which my home automation system will, by the way, give the impression of an occupied house by turning lights on and off every now and then.
+
+Anyways, now that I've defined when the fountain should be running, I can actually make it obey my will by using my reactive HOUM.IO API wrapper:
+
+```coffeescript
+houm.controlLight "fountain", fountainP
+````
