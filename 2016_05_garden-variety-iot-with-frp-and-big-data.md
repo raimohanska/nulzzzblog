@@ -1,4 +1,4 @@
-## Garden variety IoT with Big Data and FRP
+## Garden Variety IoT with Big Data and FRP
 
 Today I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing.
 
