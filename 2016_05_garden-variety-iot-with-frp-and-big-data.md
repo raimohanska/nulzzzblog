@@ -74,7 +74,7 @@ houm.controlLight "fountain", fountainP
 
 FRP is not just great for combining the current values of a bunch of Properties. It really shines also when you have to deal with time. Like
 
-  "Turn off lights if there's no activity in 2 hours"
+  *"Turn off lights if there's no activity in 2 hours"*
   
 You can express this with this code
 
