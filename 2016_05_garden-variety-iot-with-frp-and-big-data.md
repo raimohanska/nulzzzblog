@@ -1,6 +1,8 @@
 ## Garden Variety IoT with Big Data and FRP
 
-Today I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing outside.
+I've been turning my home into an IoT (Internet of Things) lab lately. My livingroom white leds enhance the light coming from outside, based on an algorithm that depends on lightness outside. The other lights turn on automatically if I'm there when the night gets dark and I forgot to turn them on myself (happens often). The air humidifier in my bedroom is regulated with an external humidity sensor and an algorithm that keeps the humidity between healthy limits. I've been telling myself and my spouse that I'm doing this to make living easier but I guess I can admit that I do it mostly just because I can and I enjoy the tweaking itself. What's cool and what I want to talk about though is how nicely the FRP (functional reactive programming) is suited for home automation.
+
+For instance, yesterday I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing outside.
 
 ![fountain](images/fountain.jpg)
 
@@ -16,17 +18,15 @@ houm.controlLight "fountain", fountainP
 ````
 
 This is possible because I’ve already installed some sensors around my house, measuring things like temperature, 
-humidity and lightness here and there. Some sensors I've bought and many have I soldered together from stuff like ESP-8266 or Arduino microcontrollers, Raspberry Pis and numerous sensor modules.
-I’ve even designed a printed circuit board that has motion detection and a bunch of measurements. 
+humidity and lightness here and there. Some sensors I've bought and many have I soldered together from stuff like ESP-8266 WiFi microcontrollers, Raspberry Pis and numerous sensor modules. I’ve even designed a printed circuit board that has motion detection and a bunch of measurements, and ordered the manufacturing of 10 units from China. Looks like this:
 
 ![raimo-unit](images/raimo-unit.jpg)
-
 
 Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up, that allows me to turn 
 lights and actually any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
 
 Because I’m an FRP nerd and happen to have built a [FRP library](https://github.com/baconjs/bacon.js/) of my own a few years ago,
-I want to do my automation by combining streams of data using cool stuff like flatMap and combine. So I wrote a simple server (link) platform that allows me to gather the data from my sensors and lighting system and pipe and combine it to control my lighting. And, of course, the fountain.
+I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. So I wrote a simple server (link) platform that allows me to gather the data from my sensors and lighting system and pipe and combine it to control my lighting. And, of course, the fountain.
 
 ### FRP IoT
 
