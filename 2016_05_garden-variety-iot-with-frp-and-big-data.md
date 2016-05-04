@@ -89,7 +89,7 @@ You can express this with this code
   inactiveE.forEach(houm.setLight("livingroom"))
 ```
 
-In fact, libraries like Bacon.js and RxJs are packed full of operators that you can do to achieve any kind of effect on the time axis with declarative, functional code.
+In fact, libraries like Bacon.js and RxJs are packed full of operators that you can do to achieve any kind of effect on the time axis with declarative, functional code. And that's the kind of code I like.
 
 ### My IoT Platform
 
