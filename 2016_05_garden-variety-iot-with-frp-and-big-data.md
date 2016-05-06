@@ -10,7 +10,7 @@ I integrated my fountain pump into my home automation system this with this piec
 
 ```coffeescript
 outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
-dayTimeP = time.hourOfDayP.map((hours) -> hours >= 6 || hours <= 22)
+dayTimeP = time.hourOfDayP.map((hours) -> hours >= 7 && hours <= 22)
 freezingP = outdoorTempP.map((t) -> t < 0)
 someoneHomeP = motion.occupiedP("livingroom", time.oneHour * 8)
 fountainP = dayTimeP.and(freezingP.not()).and(someoneHomeP)
@@ -43,7 +43,7 @@ outdoorTempP.forEach((t) -> console.log("temperature is " + t)
 
 ```coffeescript
 freezingP = outdoorTempP.map((t) -> t < 0)
-dayTimeP = time.hourOfDayP.map((hours) -> hours >= 6 || hours <= 22)
+dayTimeP = time.hourOfDayP.map((hours) -> hours >= 7 && hours <= 22)
 ````
 
 Here I've used the `map` method of `outdoorTempP` to transform the temperature values into boolean values so that the new property `freezingP` will hold `true` when temperature outside is freezing (I'm obviously using Celsius degrees here). Then I added a new property `dayTimeP` using a similar `map` call on the `hourOfDayP` property of the `time` API.
@@ -70,7 +70,7 @@ Anyways, now that I've defined when the fountain should be running, I can actual
 houm.controlLight "fountain", fountainP
 ````
 
-### The time axis
+### The Time Axis
 
 FRP is not just great for combining the current values of a bunch of Properties. It really shines also when you have to deal with time. Like
 
