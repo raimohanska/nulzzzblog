@@ -26,7 +26,7 @@ Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up, t
 lights and actually any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
 
 Because I’m an FRP nerd and happen to have built a [FRP library](https://github.com/baconjs/bacon.js/) of my own a few years ago,
-I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. So I wrote a simple server (link) platform that allows me to gather the data from my sensors and lighting system and pipe and combine it to control my lighting. And, of course, the fountain.
+I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. So I wrote a simple [server platform](https://github.com/raimohanska/sensor-server) that allows me to gather the data from my sensors and lighting system and pipe and combine it to control my lighting. And, of course, the fountain.
 
 ### Introduction to FRP IoT: Combining Properties
 
