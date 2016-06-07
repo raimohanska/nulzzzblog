@@ -1,12 +1,16 @@
 ## Garden Variety IoT with Big Data and FRP
 
-I've been turning my home into an IoT (Internet of Things) lab lately. My livingroom white leds enhance the light coming from outside, based on an algorithm that depends on lightness outside. The other lights turn on automatically if I'm there when the night gets dark and I forgot to turn them on myself (happens often). The air humidifier in my bedroom is regulated with an external humidity sensor and an algorithm that keeps the humidity between healthy limits. I've been telling myself and my spouse that I'm doing this to make living easier but I guess I can admit that I do it mostly just because I can and I enjoy the tweaking itself. What's cool and what I want to talk about though is how nicely the FRP (functional reactive programming) is suited for home automation.
+Lately, I've been turning my home into an Internet of Things (IoT) lab.
 
-For instance, yesterday I put the fountain in my garden under automatic control. It will only run when someone’s home, it’s daytime and obviously, as I live in Finland, when it’s not freezing outside.
+My livingroom white leds enhance natural light based on an algorithm that depends on how light it is outside. Other lights turn on automatically when the night gets dark if I'm home and forgot to turn them on myself (this happens often). The air humidifier in the bedroom is regulated with an external humidity sensor and an algorithm that keeps the humidity between healthy limits. 
+
+I've been telling myself – and my spouse – that I'm doing this to make living easier. However, I guess I could admit that I do it mostly just because it's possible and the tweaking itself is fun. What is cool and worth writing about is how nicely the FRP (functional reactive programming) is suited for home automation.
+
+For instance, yesterday I put the fountain in my garden under automatic control. It will only run when someone’s home, it is daytime and, obviously, as we live in Finland, when it isn't freezing outside.
 
 ![fountain](images/fountain.jpg)
 
-I integrated my fountain pump into my home automation system this with this piece of code (I'll explain it later):
+I integrated the fountain pump into my home automation system this with this piece of code (I'll explain it later):
 
 ```coffeescript
 outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
@@ -17,22 +21,22 @@ fountainP = dayTimeP.and(freezingP.not()).and(someoneHomeP)
 houm.controlLight "fountain", fountainP
 ````
 
-This is possible because I’ve already installed some sensors around my house, measuring things like temperature, 
-humidity and lightness here and there. Some sensors I've bought and many have I soldered together from stuff like ESP-8266 WiFi microcontrollers, Raspberry Pis and numerous sensor modules. I’ve even designed a printed circuit board that has motion detection and a bunch of measurements, and ordered the manufacturing of 10 units from China. Looks like this:
+This is possible because I’ve already installed some sensors here and there around my house, measuring things like temperature, 
+humidity and lightness. Some sensors came straight from the store, many have I've soldered together from stuff like ESP-8266 WiFi microcontrollers, Raspberry Pis and numerous sensor modules. I’ve even designed a printed circuit board that has motion detection and a bunch of measurements and ordered the manufacturing of 10 units from China. It looks like this:
 
 ![raimo-unit](images/raimo-unit.jpg)
 
-Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up, that allows me to turn 
-lights and actually any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
+Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up. It allows turning 
+lights and, in fact, any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
 
 Because I’m an FRP nerd and happen to have built a [FRP library](https://github.com/baconjs/bacon.js/) of my own a few years ago,
-I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. So I wrote a simple [server platform](https://github.com/raimohanska/sensor-server) that allows me to gather the data from my sensors and lighting system and pipe and combine it to control my lighting. And, of course, the fountain.
+I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. For this, I wrote a simple [server platform](https://github.com/raimohanska/sensor-server) that allows gathering the data from the sensors and lighting system and piping and combining it to control the house lighting. And, of course, the fountain.
 
 ### Introduction to FRP IoT: Combining Properties
 
-For me, home automation and IoT is about collecting streams of measurement values, storing them for later use and visualization, transforming and combining this data into control streams that can then be fed to actuators such as lighting, pumps and valves. To me, FRP with a library like Bacon.js seems like the perfect fit.
+For me, home automation and IoT are about collecting streams of measurement values, storing them for later use and visualization and transforming and combining data into control streams that can then be fed to actuators, such as lighting, pumps and valves. An FRP with a library like Bacon.js seems like the perfect fit.
 
-In Bacon.js, we use `EventStreams` to represent distinct events and `Properties` to represent values that change over time. For instance, in my home automation platform, there's an API called `sensors` that will give me any measured value as a Property. So, when I write
+In Bacon.js, we use `EventStreams` to represent distinct events and `Properties` to represent values that change over time. For instance, in my home automation platform, there's an API called `sensors` that will give any measured value as a Property. So, when I write
 
 ```coffeescript
 outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
@@ -46,7 +50,7 @@ freezingP = outdoorTempP.map((t) -> t < 0)
 dayTimeP = time.hourOfDayP.map((hours) -> hours >= 7 && hours <= 22)
 ````
 
-Here I've used the `map` method of `outdoorTempP` to transform the temperature values into boolean values so that the new property `freezingP` will hold `true` when temperature outside is freezing (I'm obviously using Celsius degrees here). Then I added a new property `dayTimeP` using a similar `map` call on the `hourOfDayP` property of the `time` API.
+Here I've used the `map` method of `outdoorTempP` to transform the temperature values into boolean values so that the new property `freezingP` will hold `true` when temperature outside is freezing – I'm obviously using Celsius degrees here. Then I added a new property `dayTimeP` using a similar `map` call on the `hourOfDayP` property of the `time` API.
 
 Finally, I add one more property from the `motion` API and combine all of the data using boolean logic:
 
@@ -62,9 +66,11 @@ fountainP = Bacon.combineWith(dayTimeP, freezingP, someoneHomeP, (daytime, freez
   daytime && atHome && !freezing
 ```
 
-Admittedly my "someone home" property is not very accurate, as it's based on whether there's been motion in the livingroom in the last 8 hours. I'll add an outdoor motion sensor later for more accuracy, but this will do for now. It's not fatal to have a fountain running even when I'm not home. But at least it won't be running when I'm on a 2-week vacation in Africa. During which my home automation system will, by the way, give the impression of an occupied house by turning lights on and off every now and then.
+Admittedly, the "someone home" property is not very accurate, as it's based on whether there's been motion in the livingroom in the last 8 hours. I'll add an outdoor motion sensor later for more accuracy, but this will do for now. It's not fatal to have a fountain running, even when no one is home. But at least it won't be running when I'm on a two-week vacation in Africa. 
 
-Anyways, now that I've defined when the fountain should be running, I can actually make it obey my will by using my reactive HOUM.IO API wrapper:
+During which the home automation system will, by the way, give the impression of an occupied house by turning lights on and off every now and then.
+
+Anyways, now that I've defined when the fountain should be running, it can be made to obey my will by using my reactive HOUM.IO API wrapper:
 
 ```coffeescript
 houm.controlLight "fountain", fountainP
@@ -72,7 +78,7 @@ houm.controlLight "fountain", fountainP
 
 ### The Time Axis
 
-FRP is not just great for combining the current values of a bunch of Properties. It really shines also when you have to deal with time. Like
+FRP is not just great for combining the current values of a bunch of Properties. It also really shines when you have to deal with time, like
 
   *"Turn off lights if there's no activity in 2 hours"*
   
