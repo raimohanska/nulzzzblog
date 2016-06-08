@@ -4,7 +4,7 @@ Lately, I've been turning my home into an Internet of Things (IoT) lab.
 
 My livingroom white leds enhance natural light based on an algorithm that depends on how light it is outside. Other lights turn on automatically when the night gets dark if I'm home and forgot to turn them on myself (this happens often). The air humidifier in the bedroom is regulated with an external humidity sensor and an algorithm that keeps the humidity between healthy limits. 
 
-I've been telling myself – and my spouse – that I'm doing this to make living easier. However, I guess I could admit that I do it mostly just because it's possible and the tweaking itself is fun. What is cool and worth writing about is how nicely the FRP (functional reactive programming) is suited for home automation.
+I've been telling myself – and my spouse – that I'm doing this to make living easier. However, I guess I could admit that I do it mostly just because it's possible and the tweaking itself is fun. What is cool and worth writing about is how nicely FRP (functional reactive programming) is suited for home automation.
 
 For instance, yesterday I put the fountain in my garden under automatic control. It will only run when someone’s home, it is daytime and, obviously, as we live in Finland, when it isn't freezing outside.
 
@@ -26,15 +26,15 @@ humidity and lightness. Some sensors came straight from the store, many have I'v
 
 ![raimo-unit](images/raimo-unit.jpg)
 
-Also, I have the [Huom.IO](http://houm.io/en/) lighting control system set up. It allows turning 
+Also, I have the [Huom.io](http://houm.io/en/) lighting control system set up. It allows turning 
 lights and, in fact, any electric appliances on and off using a simple [API](https://github.com/houmio/houmio-docs/blob/master/apidoc.md).
 
-Because I’m an FRP nerd and happen to have built a [FRP library](https://github.com/baconjs/bacon.js/) of my own a few years ago,
-I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. For this, I wrote a simple [server platform](https://github.com/raimohanska/sensor-server) that allows gathering the data from the sensors and lighting system and piping and combining it to control the house lighting. And, of course, the fountain.
+Because I’m an FRP nerd and happen to have built an [FRP library](https://github.com/baconjs/bacon.js/) of my own a few years ago,
+I want to do my automation by combining streams of data using FRP operators like `map`, `flatMap` and `combine`. For this, I wrote a simple [server platform](https://github.com/raimohanska/sensor-server) that allows gathering the data from the sensors and lighting system and then piping and combining it to control the house lighting. And, of course, the fountain.
 
 ### Introduction to FRP IoT: Combining Properties
 
-For me, home automation and IoT are about collecting streams of measurement values, storing them for later use and visualization and transforming and combining data into control streams that can then be fed to actuators, such as lighting, pumps and valves. An FRP with a library like Bacon.js seems like the perfect fit.
+For me, home automation and IoT are about collecting streams of measurement values, storing them for later use and visualization as well as transforming and combining data into control streams that can then be fed to actuators, such as lighting, pumps and valves. FRP with a library like Bacon.js seems like the perfect fit.
 
 In Bacon.js, we use `EventStreams` to represent distinct events and `Properties` to represent values that change over time. For instance, in my home automation platform, there's an API called `sensors` that will give any measured value as a Property. So, when I write
 
@@ -43,7 +43,7 @@ outdoorTempP = sensors.sensorP({type:"temperature", location: "outdoor"})
 outdoorTempP.forEach((t) -> console.log("temperature is " + t)
 ````
 
-... my function on line 2 will be called when the outside temperature property `outdoorTempP` changes and the temperature will be written to standard output. Not very useful yet, but let's add more stuff.
+...my function on line 2 will be called when the outside temperature property `outdoorTempP` changes and the temperature will be written to standard output. Not very useful yet, but let's add more stuff.
 
 ```coffeescript
 freezingP = outdoorTempP.map((t) -> t < 0)
