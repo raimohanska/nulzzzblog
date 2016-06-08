@@ -89,10 +89,10 @@ You can express this with this code
   motionP = sensors.sensorP({type: "motion", location: "livingroom"})
   # motionE emits an event when motionP changes from 0 to 1
   motionE = motionP.changes().filter((m) -> m == 1)
-  # inactiveE emits an event with value zero after 2 hours of inactivity
-  inactiveE = motionE.debounce(time.oneHour * 2).map(0)
+  # inactiveE emits an event after 2 hours have passed since last detected motion
+  inactiveE = motionE.debounce(time.oneHour * 2)
   # sets livingroom brightness to zero when inactiveE emits an event
-  inactiveE.forEach(houm.setLight("livingroom"))
+  inactiveE.forEach(-> houm.setLight("livingroom")(0))
 ```
 
 In fact, libraries like Bacon.js and RxJs are packed full of operators that you can do to achieve any kind of effect on the time axis with declarative, functional code. And that's the kind of code I like.
