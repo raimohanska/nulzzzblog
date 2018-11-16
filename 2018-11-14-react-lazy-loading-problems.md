@@ -119,7 +119,7 @@ const HooksFetcher = ({id}) => {
   const [data, setData] = useState("loading")
   // Fetch data asynchronously when component is rendered, but *only when the id prop changes*.
   // It's important to pass an array of props/variables to check, to prevent unnecessary calls to fetchData.
-  useEffect(() => { fetchData(id).then(setData), [id] })
+  useEffect(() => { fetchData(id).then(setData) }, [id])
   // Render value from local state
   return <span>{data}</span>;
 }
